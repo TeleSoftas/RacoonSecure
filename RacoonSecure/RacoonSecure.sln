@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.Core", "RacoonSecure.Core\RacoonSecure.Core.csproj", "{04999AC6-D17D-4592-A294-3A29E14D605C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.Core.Tests", "RacoonSecure.Core.Tests\RacoonSecure.Core.Tests.csproj", "{3FD4F1F9-D0B5-452F-8A13-3D1BABE636DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.PasswordHasher", "RacoonSecure.PasswordHasher\RacoonSecure.PasswordHasher.csproj", "{30A0CB1A-1734-4C37-9567-929AB4FE95AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04999AC6-D17D-4592-A294-3A29E14D605C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04999AC6-D17D-4592-A294-3A29E14D605C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04999AC6-D17D-4592-A294-3A29E14D605C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04999AC6-D17D-4592-A294-3A29E14D605C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FD4F1F9-D0B5-452F-8A13-3D1BABE636DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FD4F1F9-D0B5-452F-8A13-3D1BABE636DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FD4F1F9-D0B5-452F-8A13-3D1BABE636DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FD4F1F9-D0B5-452F-8A13-3D1BABE636DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30A0CB1A-1734-4C37-9567-929AB4FE95AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A0CB1A-1734-4C37-9567-929AB4FE95AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A0CB1A-1734-4C37-9567-929AB4FE95AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A0CB1A-1734-4C37-9567-929AB4FE95AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

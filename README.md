@@ -1,2 +1,2 @@
-# RacoonSecure
-Password validation NuGet package
+# password-validation-nuget
+
