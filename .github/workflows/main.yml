@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: /RacoonSecure/RacoonSecure
+        working-directory: /RacoonSecure/RacoonSecure.Core
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
