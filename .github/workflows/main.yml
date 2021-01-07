@@ -8,6 +8,9 @@ on:
 jobs:
   publish-nuget:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./RacoonSecure/RacoonSecure
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -15,13 +18,14 @@ jobs:
       with:
         dotnet-version: '3.1.x'
     - name: Install dependencies
+      working-directory: src/MyProject
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Publish to NuGet
       uses: brandedoutcast/publish-nuget@v2
       with:
-        PROJECT_FILE_PATH: NetLicensingClient/NetLicensingClient.csproj
+        PROJECT_FILE_PATH: /RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
         VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
         TAG_FORMAT: '*'
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
