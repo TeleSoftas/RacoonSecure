@@ -18,7 +18,6 @@ jobs:
       with:
         dotnet-version: '3.1.x'
     - name: Install dependencies
-      working-directory: src/MyProject
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
