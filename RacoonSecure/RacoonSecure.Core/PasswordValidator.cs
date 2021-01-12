@@ -1,72 +1,26 @@
-﻿using System;
-using RacoonSecure.Core.BloomFilter;
-using RacoonSecure.Core.CommonPasswords;
-using RacoonSecure.Core.PasswordLookup;
-using RacoonSecure.Core.Settings;
+﻿using System.Collections.Generic;
 
 namespace RacoonSecure.Core
 {
     public class PasswordValidator
     {
-        private readonly NistComplianceChecker _nistComplianceChecker;
-        private readonly CommonPasswordFilter _commonPasswordChecker;
-        private readonly PasswordBloomFilter _bloomFilter;
-        
-        
-        internal PasswordValidator(
-            NistSettings nistSettings,
-            CommonPasswordCheckSettings commonPasswordCheckSettings,
-            BloomFilterSettings bloomFilterSettings)
+        private readonly IEnumerable<IValidationRule> _validationRules;
+
+        internal PasswordValidator(IEnumerable<IValidationRule> validationRules)
         {
-            if (nistSettings.IsEnabled)
-                _nistComplianceChecker = new NistComplianceChecker();
-            if(commonPasswordCheckSettings.IsEnabled)
-                _commonPasswordChecker = new CommonPasswordFilter();
-            if (bloomFilterSettings.IsEnabled)
-                _bloomFilter = new PasswordBloomFilter();
+            _validationRules = validationRules;
         }
         
         public PasswordValidationResult Validate(string password)
         {
             var result = new PasswordValidationResult();
             
-            if (_nistComplianceChecker != null)
+            foreach (var validationRule in _validationRules)
             {
-                var response = _nistComplianceChecker.IsNistCompliant(password);
-                if (!response.IsCompliant)
-                {
-                    var error = response.Incompatibility switch
-                    {
-                        NistIncompatibility.Empty => ValidationError.Empty,
-                        NistIncompatibility.OnlyWhitespace => ValidationError.OnlyWhitespace,
-                        NistIncompatibility.TooShort => ValidationError.TooShort,
-                        _ => ValidationError.Unknown 
-                    };
-                    
-                    result.AddError(error);
-                    return result;
-                }
+                result.AddError(validationRule.Validate(password));
             }
-
-            if (_commonPasswordChecker != null)
-            {
-                if (_commonPasswordChecker.IsPasswordCommon(password))
-                {
-                    result.AddError(ValidationError.CommonPassword);
-                    return result;
-                }
-            }
-
-            if (_bloomFilter != null)
-            {
-                if (_bloomFilter.PossiblyExists(password))
-                {
-                    result.AddError(ValidationError.CommonPassword);
-                    return result;
-                }
-            }
-
+            
             return result;
-        }   
+        }
     }
 }

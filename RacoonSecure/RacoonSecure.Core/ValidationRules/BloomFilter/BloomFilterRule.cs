@@ -4,19 +4,25 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace RacoonSecure.Core.BloomFilter
+namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
-    internal class PasswordBloomFilter
+    internal class BloomFilterRule : IValidationRule
     {
         private static readonly MD5 Md5 = MD5.Create();
         private static readonly byte[] BloomFilter = new byte[10000];
 
-        public PasswordBloomFilter()
+        public BloomFilterRule()
         {
             AddArray(PasswordStorage.LoadPasswords());
         }
 
-        public bool PossiblyExists(string item)
+        public ValidationError Validate(string password)
+        {
+            return PossiblyExists(password) ? ValidationError.CommonPassword : default;
+        }
+
+
+        private static bool PossiblyExists(string item)
         {
             var hash = BloomHash(ComputeBloomHash(item)) & 0x7FFFFFFF;
             var bit = (byte)(1 << (hash & 7)); // you have 8 bits;
@@ -51,8 +57,8 @@ namespace RacoonSecure.Core.BloomFilter
             
             return result;
         }
-        
-        public static string ComputeBloomHash(string input)
+
+        private static string ComputeBloomHash(string input)
         {
             var inputBytes = Encoding.ASCII.GetBytes(input);
             var hashBytes = Md5.ComputeHash(inputBytes).Take(10).ToArray();

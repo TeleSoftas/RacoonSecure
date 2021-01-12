@@ -1,4 +1,4 @@
-namespace RacoonSecure.Core.BloomFilter
+namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
     internal static class PasswordStorage
     {

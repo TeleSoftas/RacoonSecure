@@ -1,4 +1,4 @@
-namespace RacoonSecure.Core.PasswordLookup
+namespace RacoonSecure.Core.ValidationRules.Nist
 {
     internal class NistComplianceResponse
     {

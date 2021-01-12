@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using RacoonSecure.Core.Cryptography;
 
-namespace RacoonSecure.Core.CommonPasswords
+namespace RacoonSecure.Core.ValidationRules.CommonPasswords
 {
-    internal class CommonPasswordFilter
+    internal class CommonPasswordFilterRule : IValidationRule
     {
         private readonly List<string> _commonPasswordHashes;
 
-        public CommonPasswordFilter()
+        public CommonPasswordFilterRule()
         {
             _commonPasswordHashes = new List<string>();
             InitializeCommonPasswords(_commonPasswordHashes);
         }
+        
+        public ValidationError Validate(string password)
+        {
+            return IsPasswordCommon(password) ? ValidationError.CommonPassword : default;
+        }
 
-        public bool IsPasswordCommon(string password)
+        private bool IsPasswordCommon(string password)
         {
             var hash = CryptoHelper.ComputeSha1Hash(password, 10);
             return _commonPasswordHashes.Contains(hash);
@@ -23,7 +28,7 @@ namespace RacoonSecure.Core.CommonPasswords
 
         private void InitializeCommonPasswords(ICollection<string> list)
         {
-            using var stream = GetType().Assembly.GetManifestResourceStream($"RacoonSecure.Core.CommonPasswords.Common.txt");
+            using var stream = GetType().Assembly.GetManifestResourceStream("RacoonSecure.Core.ValidationRules.CommonPasswords.Common.txt");
             if(stream == null)
                 throw new NullReferenceException("No common password resource located");
 

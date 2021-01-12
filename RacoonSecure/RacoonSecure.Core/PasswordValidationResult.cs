@@ -5,17 +5,27 @@ namespace RacoonSecure.Core
 {
     public class PasswordValidationResult
     {
-        private List<ValidationError> Errors { get; set; }
+        private List<ValidationError> _errors { get; }
         
         public PasswordValidationResult()
         {
-            Errors = new List<ValidationError>();
+            _errors = new List<ValidationError>();
         }
 
-        public bool IsValid() => Errors == null || !Errors.Any();
-        
-        public IEnumerable<string> GetErrors() => Errors.Select(x => x.ToString()).ToArray();
-        
-        internal void AddError(ValidationError error) => Errors.Add(error);
+        public bool IsValid() => _errors == null || !_errors.Any();
+
+        public IEnumerable<string> Errors
+        {
+            get
+            {
+                return _errors.Select(x => x.ToString());           
+            }
+        }
+
+        internal void AddError(ValidationError error)
+        {
+            if(error != ValidationError.None)
+                _errors.Add(error);
+        }
     }
 }

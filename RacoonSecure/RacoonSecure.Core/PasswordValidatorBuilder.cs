@@ -1,51 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
 using RacoonSecure.Core.Settings;
+using RacoonSecure.Core.ValidationRules.BloomFilter;
+using RacoonSecure.Core.ValidationRules.CommonPasswords;
+using RacoonSecure.Core.ValidationRules.Nist;
 
 namespace RacoonSecure.Core
 {
     public class PasswordValidatorBuilder
     {
-        private NistSettings _nistSettings;
-        private CommonPasswordCheckSettings _commonPasswordCheckSettings;
-        private BloomFilterSettings _bloomFilterSettings;
-
+        private readonly IList<IValidationRule> _validationRules;
+        
         public PasswordValidatorBuilder()
         {
-            _nistSettings = new NistSettings();
-            _commonPasswordCheckSettings = new CommonPasswordCheckSettings();
-            _bloomFilterSettings = new BloomFilterSettings();
+            _validationRules = new List<IValidationRule>();
         }
         
-        public PasswordValidatorBuilder UseNistGuidelines(NistSettings settings = null)
+        public PasswordValidatorBuilder UseNistGuidelines()
         {
-            if(settings != null)
-                _nistSettings = settings;
-            
-            _nistSettings.IsEnabled = true;
+            _validationRules.Add(new NistComplianceChecker());            
             return this;
         }
         
-        public PasswordValidatorBuilder UseCommonPasswordCheck(CommonPasswordCheckSettings settings = null)
+        public PasswordValidatorBuilder UseCommonPasswordCheck()
         {
-            if(settings != null)
-                _commonPasswordCheckSettings = settings;
-            
-            _commonPasswordCheckSettings.IsEnabled = true;
+            _validationRules.Add(new CommonPasswordFilterRule());
             return this;
         }
 
-        public PasswordValidatorBuilder UseBloomFilter(BloomFilterSettings settings = null)
+        public PasswordValidatorBuilder UseBloomFilter()
         {
-            if(settings != null)
-                _bloomFilterSettings = settings;
-            
-            _bloomFilterSettings.IsEnabled = true;
+            _validationRules.Add(new BloomFilterRule());            
             return this;
         }
-        
-        public PasswordValidator Build() 
-            => new PasswordValidator(
-                _nistSettings,
-                _commonPasswordCheckSettings,
-                _bloomFilterSettings);
+
+        public PasswordValidator Build() => new PasswordValidator(_validationRules);
     }
 }
