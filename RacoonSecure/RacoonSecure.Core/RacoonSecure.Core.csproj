@@ -9,10 +9,12 @@
         <PackageLicenseUrl>https://licenses.nuget.org/Apache-2.0</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/TeleSoftas/RacoonSecure</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+        <PackageIcon>icon.jpg</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="CommonPasswords\common.txt" />
+        <None Remove="CommonPasswords\common.txt" />
+        <None Include="icon.jpg" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
