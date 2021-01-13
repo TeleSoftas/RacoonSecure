@@ -5,7 +5,7 @@ namespace RacoonSecure.Core.Tests
 {
     public class CustomRuleTests
     {
-        public class CustomLengthRule : IPasswordValidationRule
+        private class CustomLengthRule : IPasswordValidationRule
         {
             public ValidationError Validate(string password)
             {
@@ -14,8 +14,8 @@ namespace RacoonSecure.Core.Tests
                     : ValidationError.Unknown;
             }
         }
-        
-        public class CustomRegexRule : IPasswordValidationRule
+
+        private class CustomRegexRule : IPasswordValidationRule
         {
             public ValidationError Validate(string password)
             {
@@ -23,6 +23,15 @@ namespace RacoonSecure.Core.Tests
                 return Regex.IsMatch(password, @"^[\!\@\#\$\%\^\&\*\(\)]+$") 
                     ? ValidationError.None
                     : ValidationError.Unknown; 
+            }
+        }
+
+        private class OnlyNumberValidationRule : IPasswordValidationRule
+        {
+            public ValidationError Validate(string password)
+            {
+                var isValid = Regex.IsMatch(password, @"^\d+$");
+                return isValid ? ValidationError.None : ValidationError.Unknown;
             }
         }
 
@@ -52,6 +61,17 @@ namespace RacoonSecure.Core.Tests
             
             Assert.False(validator.Validate(flawfulPassword).IsValid());
             Assert.True(validator.Validate(correctPassword).IsValid());
+        }
+        
+        [Fact]
+        public void CustomOnlyNumbersRuleValidatesCorrectly()
+        {
+            var validator = new PasswordValidatorBuilder()
+                .UseCustom(new OnlyNumberValidationRule())
+                .Build();
+            
+            Assert.True(validator.Validate("456789542135462").IsValid());
+            Assert.False(validator.Validate("4c678x54213a462").IsValid());
         }
     }
 }
