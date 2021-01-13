@@ -4,9 +4,9 @@ namespace RacoonSecure.Core
 {
     public class PasswordValidator
     {
-        private readonly IEnumerable<IValidationRule> _validationRules;
+        private readonly IEnumerable<IPasswordValidationRule> _validationRules;
 
-        internal PasswordValidator(IEnumerable<IValidationRule> validationRules)
+        internal PasswordValidator(IEnumerable<IPasswordValidationRule> validationRules)
         {
             _validationRules = validationRules;
         }

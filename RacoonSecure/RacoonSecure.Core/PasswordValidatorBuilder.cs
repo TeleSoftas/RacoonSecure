@@ -9,11 +9,11 @@ namespace RacoonSecure.Core
 {
     public class PasswordValidatorBuilder
     {
-        private readonly IList<IValidationRule> _validationRules;
+        private readonly IList<IPasswordValidationRule> _validationRules;
         
         public PasswordValidatorBuilder()
         {
-            _validationRules = new List<IValidationRule>();
+            _validationRules = new List<IPasswordValidationRule>();
         }
         
         public PasswordValidatorBuilder UseNistGuidelines()
@@ -31,6 +31,12 @@ namespace RacoonSecure.Core
         public PasswordValidatorBuilder UseBloomFilter()
         {
             _validationRules.Add(new BloomFilterRule());            
+            return this;
+        }
+        
+        public PasswordValidatorBuilder UseCustom(IPasswordValidationRule passwordValidationRule)
+        {
+            _validationRules.Add(passwordValidationRule);
             return this;
         }
 

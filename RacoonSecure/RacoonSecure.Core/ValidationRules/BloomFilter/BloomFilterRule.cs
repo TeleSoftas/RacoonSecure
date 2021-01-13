@@ -6,7 +6,7 @@ using System.Text;
 
 namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
-    internal class BloomFilterRule : IValidationRule
+    internal class BloomFilterRule : IPasswordValidationRule
     {
         private static readonly MD5 Md5 = MD5.Create();
         private static readonly byte[] BloomFilter = new byte[10000];

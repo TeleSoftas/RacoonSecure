@@ -1,6 +1,6 @@
 namespace RacoonSecure.Core
 {
-    public interface IValidationRule
+    public interface IPasswordValidationRule
     {
         ValidationError Validate(string password);
     }

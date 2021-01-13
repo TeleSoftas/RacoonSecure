@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace RacoonSecure.Core.ValidationRules.Nist
 {
-    internal class NistComplianceChecker : IValidationRule
+    internal class NistComplianceChecker : IPasswordValidationRule
     {
         public ValidationError Validate(string password) => IsNistCompliant(password);
 

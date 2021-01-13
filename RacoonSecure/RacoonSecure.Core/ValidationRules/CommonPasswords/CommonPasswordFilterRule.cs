@@ -5,7 +5,7 @@ using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Core.ValidationRules.CommonPasswords
 {
-    internal class CommonPasswordFilterRule : IValidationRule
+    internal class CommonPasswordFilterRule : IPasswordValidationRule
     {
         private readonly List<string> _commonPasswordHashes;
 
