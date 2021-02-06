@@ -19,7 +19,7 @@ namespace RacoonSecure.Core
         
         public PasswordValidatorBuilder UseNistGuidelines()
         {
-            _validationRules.Add(new NistComplianceChecker());            
+            _validationRules.Add(new NistComplianceRule());            
             return this;
         }
         

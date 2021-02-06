@@ -3,7 +3,8 @@ using System.Text;
 
 namespace RacoonSecure.Core.Cryptography
 {
-    internal static class CryptoHelper
+    //TODO: back from public to internal
+    public static class CryptoHelper
     {
         private static readonly SHA1Managed Sha1 = new SHA1Managed();
 

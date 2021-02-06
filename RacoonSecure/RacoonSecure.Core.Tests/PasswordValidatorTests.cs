@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using RacoonSecure.Core.Cryptography;
+using RacoonSecure.Core.ValidationRules.XorFilter;
 using Xunit;
 
 namespace RacoonSecure.Core.Tests
@@ -35,6 +41,19 @@ namespace RacoonSecure.Core.Tests
             var validator = new PasswordValidatorBuilder().UseBloomFilter().Build();
             var validationResult = validator.Validate(password); 
             Assert.True(validationResult.IsValid() == shouldBeValid);
+        }
+        
+        [Fact]
+        public void PasswordIsNotInXorFilter()
+        {
+            var passwords = new List<string> {"test", "test1", "test2", "test3", "test4"};
+            var hashes = passwords
+                .Select(x => BitConverter.ToUInt64(Encoding.ASCII.GetBytes(CryptoHelper.ComputeSha1Hash(x, 10))))
+                .ToArray();
+            
+            var xorfiler = Xor16.Construction(hashes);
+            Assert.False(xorfiler.Contains(123548798456));
+            Assert.True(xorfiler.Contains(hashes[0]));
         }
     }
 }

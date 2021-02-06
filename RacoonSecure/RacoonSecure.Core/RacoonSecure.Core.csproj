@@ -14,7 +14,7 @@
 
     <ItemGroup>
         <None Remove="CommonPasswords\common.txt" />
-        <None Include="icon.jpg" Pack="true" PackagePath="\"/>
+        <None Include="icon.jpg" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>

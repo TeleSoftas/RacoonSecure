@@ -18,7 +18,7 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
 
         public string Validate(string password)
         {
-            return PossiblyExists(password) ? ValidationError.CommonPassword.ToString() : default;
+            return PossiblyExists(password) ? ValidationError.CommonPassword : default;
         }
 
 

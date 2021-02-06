@@ -13,15 +13,8 @@ namespace RacoonSecure.Core
         }
 
         public bool IsValid() => _errors == null || !_errors.Any();
-
-        public IEnumerable<string> Errors
-        {
-            get
-            {
-                return _errors.Select(x => x.ToString());           
-            }
-        }
-
+        public IEnumerable<string> Errors => _errors.AsEnumerable();
+        
         internal void AddError(string error)
         {
             if(!string.IsNullOrWhiteSpace(error))
