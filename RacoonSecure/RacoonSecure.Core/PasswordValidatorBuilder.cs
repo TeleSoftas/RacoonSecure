@@ -4,6 +4,7 @@ using RacoonSecure.Core.Settings;
 using RacoonSecure.Core.ValidationRules;
 using RacoonSecure.Core.ValidationRules.BloomFilter;
 using RacoonSecure.Core.ValidationRules.CommonPasswords;
+using RacoonSecure.Core.ValidationRules.HibpApi;
 using RacoonSecure.Core.ValidationRules.Nist;
 
 namespace RacoonSecure.Core
@@ -32,6 +33,12 @@ namespace RacoonSecure.Core
         public PasswordValidatorBuilder UseBloomFilter()
         {
             _validationRules.Add(new BloomFilterRule());            
+            return this;
+        }
+        
+        public PasswordValidatorBuilder UseLeakedPasswordApi()
+        {
+            _validationRules.Add(new PasswordNotPwnedRule());
             return this;
         }
         

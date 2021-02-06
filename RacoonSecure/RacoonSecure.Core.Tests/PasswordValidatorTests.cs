@@ -55,5 +55,18 @@ namespace RacoonSecure.Core.Tests
             Assert.False(xorfiler.Contains(123548798456));
             Assert.True(xorfiler.Contains(hashes[0]));
         }
+        
+        
+        [Fact]
+        public void PasswordIsNotPwned()
+        {
+            var validator = new PasswordValidatorBuilder().UseLeakedPasswordApi().Build();
+            
+            var validationResult = validator.Validate("password1");
+            var validationResult2 = validator.Validate("asdloem154");
+            var validationResult3 = validator.Validate("test1");
+            
+            Assert.True(validationResult.IsValid());
+        }
     }
 }
