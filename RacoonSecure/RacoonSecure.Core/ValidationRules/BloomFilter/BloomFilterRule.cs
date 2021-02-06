@@ -16,9 +16,9 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
             AddArray(PasswordStorage.LoadPasswords());
         }
 
-        public ValidationError Validate(string password)
+        public string Validate(string password)
         {
-            return PossiblyExists(password) ? ValidationError.CommonPassword : default;
+            return PossiblyExists(password) ? ValidationError.CommonPassword.ToString() : default;
         }
 
 

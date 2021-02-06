@@ -1,12 +1,11 @@
 namespace RacoonSecure.Core
 {
-    public enum ValidationError
+    public static class ValidationError
     {
-        None = 0,
-        Empty = 1,
-        OnlyWhitespace = 2,
-        TooShort = 3,
-        CommonPassword = 4, 
-        Unknown = 5
+        public const string Empty = nameof(Empty);
+        public const string OnlyWhitespace = nameof(OnlyWhitespace);
+        public const string TooShort = nameof(TooShort);
+        public const string CommonPassword = nameof(CommonPassword);
+        public const string Unknown = nameof(Unknown);
     }
 }

@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using RacoonSecure.Core.ValidationRules;
 using Xunit;
 
 namespace RacoonSecure.Core.Tests
@@ -7,39 +8,39 @@ namespace RacoonSecure.Core.Tests
     {
         private class CustomLengthRule : IPasswordValidationRule
         {
-            public ValidationError Validate(string password)
+            public string Validate(string password)
             {
                 return password.Length > 10
-                    ? ValidationError.None
-                    : ValidationError.Unknown;
+                    ? string.Empty
+                    : "Password is too long";
             }
         }
 
         private class CustomRegexRule : IPasswordValidationRule
         {
-            public ValidationError Validate(string password)
+            public string Validate(string password)
             {
-                //TODO: Remake validation error to return string error, so that user could supply custom error;
                 return Regex.IsMatch(password, @"^[\!\@\#\$\%\^\&\*\(\)]+$") 
-                    ? ValidationError.None
-                    : ValidationError.Unknown; 
+                    ? string.Empty
+                    : "Password doesn't match custom regex"; 
             }
         }
 
         private class OnlyNumberValidationRule : IPasswordValidationRule
         {
-            public ValidationError Validate(string password)
+            public string Validate(string password)
             {
-                var isValid = Regex.IsMatch(password, @"^\d+$");
-                return isValid ? ValidationError.None : ValidationError.Unknown;
+                return Regex.IsMatch(password, @"^\d+$") 
+                    ? string.Empty 
+                    : "Password must contain only numbers";
             }
         }
 
         [Fact]
         public void CustomLengthRuleValidatesCorrectly()
         {
-            var flawfulPassword = "Pass";
-            var correctPassword = "Password1234567";
+            const string flawfulPassword = "Pass";
+            const string correctPassword = "Password1234567";
             
             var validator = new PasswordValidatorBuilder()
                 .UseCustom(new CustomLengthRule())
@@ -52,8 +53,8 @@ namespace RacoonSecure.Core.Tests
         [Fact]
         public void CustomEmailRuleValidatesCorrectly()
         {
-            var flawfulPassword = "&%*#^@(1!a";
-            var correctPassword = "!@#%$&@^#";
+            const string flawfulPassword = "&%*#^@(1!a";
+            const string correctPassword = "!@#%$&@^#";
             
             var validator = new PasswordValidatorBuilder()
                 .UseCustom(new CustomRegexRule())

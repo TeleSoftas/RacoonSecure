@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using RacoonSecure.Core.Settings;
+using RacoonSecure.Core.ValidationRules;
 using RacoonSecure.Core.ValidationRules.BloomFilter;
 using RacoonSecure.Core.ValidationRules.CommonPasswords;
 using RacoonSecure.Core.ValidationRules.Nist;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RacoonSecure.Core.ValidationRules;
 
 namespace RacoonSecure.Core
 {

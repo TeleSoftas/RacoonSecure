@@ -4,9 +4,9 @@ namespace RacoonSecure.Core.ValidationRules.Nist
 {
     internal class NistComplianceChecker : IPasswordValidationRule
     {
-        public ValidationError Validate(string password) => IsNistCompliant(password);
+        public string Validate(string password) => IsNistCompliant(password);
 
-        public ValidationError IsNistCompliant(string password)
+        public string IsNistCompliant(string password)
         {
             if (string.IsNullOrWhiteSpace(password)) 
                 return ValidationError.Empty;
@@ -15,7 +15,7 @@ namespace RacoonSecure.Core.ValidationRules.Nist
             if (password.All(c => c == ' '))
                 return ValidationError.OnlyWhitespace;
 
-            return default;
+            return string.Empty;
         }
     }
 }

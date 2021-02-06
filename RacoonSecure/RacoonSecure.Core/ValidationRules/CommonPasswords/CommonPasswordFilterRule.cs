@@ -15,9 +15,9 @@ namespace RacoonSecure.Core.ValidationRules.CommonPasswords
             InitializeCommonPasswords(_commonPasswordHashes);
         }
         
-        public ValidationError Validate(string password)
+        public string Validate(string password)
         {
-            return IsPasswordCommon(password) ? ValidationError.CommonPassword : default;
+            return IsPasswordCommon(password) ? ValidationError.CommonPassword : string.Empty;
         }
 
         private bool IsPasswordCommon(string password)

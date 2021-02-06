@@ -5,11 +5,11 @@ namespace RacoonSecure.Core
 {
     public class PasswordValidationResult
     {
-        private List<ValidationError> _errors { get; }
+        private readonly List<string> _errors;
         
         public PasswordValidationResult()
         {
-            _errors = new List<ValidationError>();
+            _errors = new List<string>();
         }
 
         public bool IsValid() => _errors == null || !_errors.Any();
@@ -22,9 +22,9 @@ namespace RacoonSecure.Core
             }
         }
 
-        internal void AddError(ValidationError error)
+        internal void AddError(string error)
         {
-            if(error != ValidationError.None)
+            if(!string.IsNullOrWhiteSpace(error))
                 _errors.Add(error);
         }
     }
