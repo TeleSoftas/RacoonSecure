@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RacoonSecure.Core.Cryptography;
-using RacoonSecure.Core.ValidationRules.XorFilter;
 using Xunit;
 
 namespace RacoonSecure.Core.Tests
