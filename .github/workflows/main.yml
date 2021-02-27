@@ -35,7 +35,7 @@ jobs:
           set_check_status_from_test_outcome: true    
 
       - name: Tests Suceeded
-        run: exit 1
+        run: echo "FAILED"
         if: ${{ steps.Run_Tests.output.result_value == 'Failed' }}
      
       
