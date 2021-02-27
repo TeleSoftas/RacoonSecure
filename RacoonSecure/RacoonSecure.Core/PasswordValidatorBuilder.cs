@@ -4,7 +4,7 @@ using RacoonSecure.Core.Settings;
 using RacoonSecure.Core.ValidationRules;
 using RacoonSecure.Core.ValidationRules.BloomFilter;
 using RacoonSecure.Core.ValidationRules.CommonPasswords;
-using RacoonSecure.Core.ValidationRules.HibpApi;
+using RacoonSecure.Core.ValidationRules.Hibp;
 using RacoonSecure.Core.ValidationRules.Nist;
 
 namespace RacoonSecure.Core

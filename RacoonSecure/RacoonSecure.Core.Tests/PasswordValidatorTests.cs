@@ -43,6 +43,21 @@ namespace RacoonSecure.Core.Tests
             Assert.True(validationResult.IsValid() == shouldBeValid);
         }
         
+        [Theory]
+        [InlineData("password1", false)]
+        [InlineData("lalala", false)]
+        [InlineData("asdasd", false)]
+        [InlineData("qwerty", false)]
+        [InlineData("x1s54r89s54s23a", true)]
+        [InlineData("l3orksmkf", true)]
+        [InlineData("ld7s889e54s23d@", true)]
+        public void PasswordIsNotPwned(string password, bool shouldBeValid)
+        {
+            var validator = new PasswordValidatorBuilder().UseLeakedPasswordApi().Build();
+            var validationResult = validator.Validate(password);
+            Assert.True(validationResult.IsValid() == shouldBeValid);
+        }
+        
         [Fact]
         public void PasswordIsNotInXorFilter()
         {
@@ -54,19 +69,6 @@ namespace RacoonSecure.Core.Tests
             var xorfiler = Xor16.Construction(hashes);
             Assert.False(xorfiler.Contains(123548798456));
             Assert.True(xorfiler.Contains(hashes[0]));
-        }
-        
-        
-        [Fact]
-        public void PasswordIsNotPwned()
-        {
-            var validator = new PasswordValidatorBuilder().UseLeakedPasswordApi().Build();
-            
-            var validationResult = validator.Validate("password1");
-            var validationResult2 = validator.Validate("asdloem154");
-            var validationResult3 = validator.Validate("test1");
-            
-            Assert.True(validationResult.IsValid());
         }
     }
 }
