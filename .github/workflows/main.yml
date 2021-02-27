@@ -23,12 +23,16 @@ jobs:
     
     - name: Build
       run: dotnet build --configuration Release --no-restore
-      
-    - name: Run Tests
-      run: dotnet test
 
-    - name: OtherAction
-      run: echo "TEST"
+    - name: Run Tests
+      uses: zyborg/dotnet-tests-report@v1
+      with:
+        project_path: RacoonSecure.Core.Tests
+        report_name: RacoonSecureTests
+        report_title: RacoonSecure Tests
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+      
+
 
     # - name: Publish to NuGet
     #   uses: brandedoutcast/publish-nuget@v2
