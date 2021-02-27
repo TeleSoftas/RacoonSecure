@@ -5,13 +5,13 @@
 ![Downloads](https://img.shields.io/nuget/dt/RacoonSecure.Core)
 ![Build](https://github.com/Telesoftas/RacoonSecure/actions/workflows/main.yml/badge.svg)
 
-Latest version ![Version](https://img.shields.io/nuget/v/RacoonSecure.Core)
+Latest version [![Version](https://img.shields.io/nuget/v/RacoonSecure.Core)](https://www.nuget.org/packages/RacoonSecure.Core)
 
-Latest Pre-release version ![Version](https://img.shields.io/nuget/vpre/RacoonSecure.Core)
+Latest Pre-release version [![Version](https://img.shields.io/nuget/vpre/RacoonSecure.Core)](https://www.nuget.org/packages/RacoonSecure.Core/absolutelatest)
 
-![RacoonSecure Logo](RacoonSecure/RacoonSecure.Core/icon.jpg)
+[![RacoonSecure Logo](RacoonSecure/RacoonSecure.Core/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.Core)
 
-RacoonSecure is a free lightweight modular library for password validation in .NET projects. Library lets you set up predifined or custom password validation rules.
+RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up predifined or custom password validation rules and have client passwords validated in no time.
 
 # Quick Start
 To get started using library, you should instantiate PasswordValidator, this can be done using PasswordValidatorBuilder.
@@ -70,3 +70,4 @@ public class CustomRegexRule : IPasswordValidationRule
 ```csharp
 var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).Build();
 ```
+
