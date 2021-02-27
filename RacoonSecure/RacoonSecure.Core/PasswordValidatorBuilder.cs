@@ -18,36 +18,65 @@ namespace RacoonSecure.Core
             _validationRules = new List<IPasswordValidationRule>();
         }
         
+        /// <summary>
+        /// Validator checks password for common NIST password guidelines, including:
+        /// PasswordIsNotNullOrWhiteSpace
+        /// Password is at least 8 characters long
+        /// Password doesn't consist only of whitespace characters 
+        /// </summary>
+        /// <returns></returns>
         public PasswordValidatorBuilder UseNistGuidelines()
         {
             _validationRules.Add(new NistComplianceRule());            
             return this;
         }
         
+        /// <summary>
+        /// Validator performs check among 100,000 most common passwords,
+        /// and determines whether password that is being validated is not found amongst them
+        /// </summary>
+        /// <returns></returns>
         public PasswordValidatorBuilder UseCommonPasswordCheck()
         {
             _validationRules.Add(new CommonPasswordFilterRule());
             return this;
         }
-
-        public PasswordValidatorBuilder UseBloomFilter()
-        {
-            _validationRules.Add(new BloomFilterRule());            
-            return this;
-        }
         
-        public PasswordValidatorBuilder UseLeakedPasswordApi()
+        /// <summary>
+        /// Validator performs call to HaveIBeenPwned API to check whether password has been leaked
+        /// https://haveibeenpwned.com/
+        /// </summary>
+        /// <returns></returns>
+        public PasswordValidatorBuilder UseHIBPApi()
         {
             _validationRules.Add(new PasswordNotPwnedRule());
             return this;
         }
         
+        /// <summary>
+        /// Register custom validation rule.
+        /// Inherit IPasswordValidationRule and pass instance of your validator.
+        /// Validate() method will be called in validation pipeline
+        /// </summary>
+        /// <param name="passwordValidationRule">Custom password validator</param>
+        /// <returns></returns>
         public PasswordValidatorBuilder UseCustom(IPasswordValidationRule passwordValidationRule)
         {
             _validationRules.Add(passwordValidationRule);
             return this;
         }
+        
+        //TODO: Needs work, comparison with XOR filter must be done.
+        // public PasswordValidatorBuilder UseBloomFilter()
+        // {
+        //     _validationRules.Add(new BloomFilterRule());            
+        //     return this;
+        // }
 
+        /// <summary>
+        /// Build configured PasswordValidator
+        /// </summary>
+        /// <returns></returns>
         public PasswordValidator Build() => new PasswordValidator(_validationRules);
     }
 }

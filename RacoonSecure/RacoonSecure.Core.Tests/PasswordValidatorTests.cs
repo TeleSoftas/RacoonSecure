@@ -53,22 +53,22 @@ namespace RacoonSecure.Core.Tests
         [InlineData("ld7s889e54s23d@", true)]
         public void PasswordIsNotPwned(string password, bool shouldBeValid)
         {
-            var validator = new PasswordValidatorBuilder().UseLeakedPasswordApi().Build();
+            var validator = new PasswordValidatorBuilder().UseHIBPApi().Build();
             var validationResult = validator.Validate(password);
             Assert.True(validationResult.IsValid() == shouldBeValid);
         }
         
-        [Fact]
-        public void PasswordIsNotInXorFilter()
-        {
-            var passwords = new List<string> {"test", "test1", "test2", "test3", "test4"};
-            var hashes = passwords
-                .Select(x => BitConverter.ToUInt64(Encoding.ASCII.GetBytes(CryptoHelper.ComputeSha1Hash(x, 10))))
-                .ToArray();
-            
-            var xorfiler = Xor16.Construction(hashes);
-            Assert.False(xorfiler.Contains(123548798456));
-            Assert.True(xorfiler.Contains(hashes[0]));
-        }
+        // [Fact]
+        // public void PasswordIsNotInXorFilter()
+        // {
+        //     var passwords = new List<string> {"test", "test1", "test2", "test3", "test4"};
+        //     var hashes = passwords
+        //         .Select(x => BitConverter.ToUInt64(Encoding.ASCII.GetBytes(CryptoHelper.ComputeSha1Hash(x, 10))))
+        //         .ToArray();
+        //     
+        //     var xorfiler = Xor16.Construction(hashes);
+        //     Assert.False(xorfiler.Contains(123548798456));
+        //     Assert.True(xorfiler.Contains(hashes[0]));
+        // }
     }
 }
