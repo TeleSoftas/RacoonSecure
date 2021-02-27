@@ -46,6 +46,7 @@ jobs:
           PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
           VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
           TAG_FORMAT: '*'
+          TAG_COMMINT: false
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
       - name: nupkg path
@@ -54,7 +55,7 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          automatic_release_tag: ${{ steps.nuget_publish.outputs.VERSION }}
           prerelease: false
           title: "RacoonSecure"
           files: |
