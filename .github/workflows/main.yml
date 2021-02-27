@@ -23,10 +23,7 @@ jobs:
     
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    
-    - name: Token
-      run: echo ${{ secrets.GITHUB_TOKEN }}
-
+   
     - name: RunTests
       uses: zyborg/dotnet-tests-report@v1
       with:
@@ -34,10 +31,7 @@ jobs:
         report_name: RacoonSecure.Core.Tests
         report_title: RacoonSecure Core Tests
         github_token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: TestResult
-      run: echo ${{ steps.RunTests.outputs.result_value }}"
-      
+        set_check_status_from_test_outcome: true     
 
 
     # - name: Publish to NuGet
