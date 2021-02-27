@@ -12,26 +12,31 @@ jobs:
       run:
         working-directory: RacoonSecure/RacoonSecure.Core
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      
+      - name: Install dependencies
+        run: dotnet restore
+      
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
     
-    - name: Install dependencies
-      run: dotnet restore
-    
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-   
-    - name: RunTests
-      uses: zyborg/dotnet-tests-report@v1
-      with:
-        project_path: RacoonSecure/RacoonSecure.Core.Tests/RacoonSecure.Core.Tests.csproj
-        report_name: RacoonSecure.Core.Tests
-        report_title: RacoonSecure Core Tests
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        set_check_status_from_test_outcome: true     
+      - name: RunTests
+        uses: zyborg/dotnet-tests-report@v1
+        with:
+          project_path: RacoonSecure/RacoonSecure.Core.Tests/RacoonSecure.Core.Tests.csproj
+          report_name: RacoonSecure.Core.Tests
+          report_title: RacoonSecure Core Tests
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          set_check_status_from_test_outcome: true    
+        if: ${{ failure() }}
+        run: exit 1       
+     
+      
 
 
     # - name: Publish to NuGet
