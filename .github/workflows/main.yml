@@ -49,7 +49,7 @@ jobs:
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
       - name: nupkg path
-        run: echo  ${{ steps.nuget_publish.outputs.PACKAGE_PATH }}
+        run: echo ${{ steps.nuget_publish.outputs.PACKAGE_PATH }}
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
