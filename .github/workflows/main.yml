@@ -46,7 +46,7 @@ jobs:
           PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
           VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
           TAG_FORMAT: '*'
-          TAG_COMMINT: false
+          TAG_COMMIT: false
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
       - name: nupkg path
