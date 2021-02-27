@@ -27,10 +27,13 @@ jobs:
     - name: Run Tests
       run: dotnet test
 
-    - name: Publish to NuGet
-      uses: brandedoutcast/publish-nuget@v2
-      with:
-        PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
-        VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
-        TAG_FORMAT: '*'
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: OtherAction
+      run: echo "TEST"
+
+    # - name: Publish to NuGet
+    #   uses: brandedoutcast/publish-nuget@v2
+    #   with:
+    #     PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
+    #     VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
+    #     TAG_FORMAT: '*'
+    #     NUGET_KEY: ${{secrets.NUGET_API_KEY}}
