@@ -25,6 +25,7 @@ namespace RacoonSecure.Core.Tests
         [InlineData("Password1", false)]
         [InlineData("Welcome", false)]
         [InlineData("smile", false)]
+        [InlineData("smile", true)]
         public void PasswordIsCommon(string password, bool shouldBeValid)
         {
             var validator = new PasswordValidatorBuilder().UseCommonPasswordCheck().Build();
