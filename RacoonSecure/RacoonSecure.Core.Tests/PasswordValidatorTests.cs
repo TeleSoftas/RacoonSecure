@@ -33,15 +33,15 @@ namespace RacoonSecure.Core.Tests
             Assert.True(validationResult.IsValid() == shouldBeValid);
         }
         
-        [Theory]
-        [InlineData("1ALLEY", false)]
-        [InlineData("LalaLand", true)]
-        public void PasswordIsNotInBloomFilter(string password, bool shouldBeValid)
-        {
-            var validator = new PasswordValidatorBuilder().UseBloomFilter().Build();
-            var validationResult = validator.Validate(password); 
-            Assert.True(validationResult.IsValid() == shouldBeValid);
-        }
+        // [Theory]
+        // [InlineData("1ALLEY", false)]
+        // [InlineData("LalaLand", true)]
+        // public void PasswordIsNotInBloomFilter(string password, bool shouldBeValid)
+        // {
+        //     var validator = new PasswordValidatorBuilder().UseBloomFilter().Build();
+        //     var validationResult = validator.Validate(password); 
+        //     Assert.True(validationResult.IsValid() == shouldBeValid);
+        // }
         
         [Theory]
         [InlineData("password1", false)]
