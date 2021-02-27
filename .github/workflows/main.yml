@@ -38,6 +38,9 @@ jobs:
       - name: Tests Suceeded
         run: exit 1 
         if: ${{ steps.run_tests.outputs.result_value == 'Failed' }}     
+
+      - name: Try run after fail
+        run: echo Ran after fail ?
       
 
 
