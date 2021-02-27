@@ -27,13 +27,16 @@ jobs:
     - name: Token
       run: echo ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run Tests
+    - name: RunTests
       uses: zyborg/dotnet-tests-report@v1
       with:
-        project_path: RacoonSecure.Core.Tests
+        project_path: RacoonSecure/RacoonSecure.Core.Tests/RacoonSecure.Core.Tests.csproj
         report_name: RacoonSecure.Core.Tests
         report_title: RacoonSecure Core Tests
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: TestResult
+      run: echo ${{ steps.RunTests.outputs.result_value }}"
       
 
 
