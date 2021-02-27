@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <PackageVersion>1.0.12-preview</PackageVersion>
+        <PackageVersion>1.0.1</PackageVersion>
         <TargetFramework>netstandard2.1</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>TeleSoftas</Authors>

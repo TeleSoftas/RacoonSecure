@@ -1,13 +1,12 @@
 # Racoon Secure
 
 
-![GitHub](https://img.shields.io/github/license/TeleSoftas/RacoonSecure)
+[![Version](https://img.shields.io/nuget/v/RacoonSecure.Core)](https://www.nuget.org/packages/RacoonSecure.Core)
 ![Downloads](https://img.shields.io/nuget/dt/RacoonSecure.Core)
 ![Build](https://github.com/Telesoftas/RacoonSecure/actions/workflows/main.yml/badge.svg)
+![GitHub](https://img.shields.io/github/license/TeleSoftas/RacoonSecure)
 
-Latest version [![Version](https://img.shields.io/nuget/v/RacoonSecure.Core)](https://www.nuget.org/packages/RacoonSecure.Core)
 
-Latest Pre-release version [![Version](https://img.shields.io/nuget/vpre/RacoonSecure.Core)](https://www.nuget.org/packages/RacoonSecure.Core/absolutelatest)
 
 [![RacoonSecure Logo](RacoonSecure/RacoonSecure.Core/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.Core)
 
