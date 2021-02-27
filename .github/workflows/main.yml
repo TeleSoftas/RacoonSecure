@@ -47,6 +47,9 @@ jobs:
           TAG_FORMAT: '*'
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
+      - name: nupkg path
+        run: echo  ${{ steps.run_tests.outputs.PACKAGE_PATH }}
+
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
