@@ -37,7 +37,7 @@ jobs:
 
       - name: Fail job on failed tests
         run: exit 1 
-        if: ${{ steps.run_tests.outputs.result_value == 'Failed' }}           
+        if: steps.run_tests.outputs.result_value == 'Failed'          
 
       - name: Publish to NuGet
         id: nuget_publish
@@ -48,13 +48,8 @@ jobs:
           TAG_FORMAT: '*'
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: nupkg path
-        run: echo ${{ steps.nuget_publish.outputs.PACKAGE_PATH }}
-
-      - name: nupkg verion
-        run: echo ${{ steps.nuget_publish.outputs.VERSION }}
-
       - uses: "marvinpinto/action-automatic-releases@latest"
+        if: steps.nuget_publish.outputs.PACKAGE_PATH != ''      
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ steps.nuget_publish.outputs.VERSION }}"
