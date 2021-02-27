@@ -35,19 +35,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           set_check_status_from_test_outcome: true    
 
-      - name: Tests Suceeded
+      - name: Test Outcome
         run: exit 1 
-        if: ${{ steps.run_tests.outputs.result_value == 'Failed' }}     
+        if: ${{ steps.run_tests.outputs.result_value == 'Failed' }}           
 
-      - name: Try run after fail
-        run: echo Ran after fail ?
-      
-
-
-    # - name: Publish to NuGet
-    #   uses: brandedoutcast/publish-nuget@v2
-    #   with:
-    #     PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
-    #     VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
-    #     TAG_FORMAT: '*'
-    #     NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+      - name: Publish to NuGet
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
+          VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
+          TAG_FORMAT: '*'
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
