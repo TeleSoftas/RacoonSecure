@@ -36,7 +36,7 @@ jobs:
 
       - name: Tests Suceeded
         run: exit 1
-        if: ${{ steps.Run_Tests.output.result_value == "Failed"}}
+        if: ${{ steps.Run_Tests.output.result_value == 'Failed' }}
      
       
 
