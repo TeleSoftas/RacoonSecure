@@ -36,7 +36,7 @@ jobs:
           set_check_status_from_test_outcome: true    
 
       - name: Tests Suceeded
-        run: echo ${{ steps.run_tests.output.result_value }}     
+        run: echo ${{ steps.run_tests.outputs.result_value }}     
       
 
 
