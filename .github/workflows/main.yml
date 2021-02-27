@@ -26,6 +26,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
     
       - name: Run Tests
+        id: run_tests
         uses: zyborg/dotnet-tests-report@v1
         with:
           project_path: RacoonSecure/RacoonSecure.Core.Tests/RacoonSecure.Core.Tests.csproj
@@ -35,9 +36,7 @@ jobs:
           set_check_status_from_test_outcome: true    
 
       - name: Tests Suceeded
-        run: echo "FAILED"
-        if: ${{ steps.Run_Tests.output.result_value == 'Failed' }}
-     
+        run: echo ${{ steps.run_tests.output.result_value }}     
       
 
 
