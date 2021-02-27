@@ -35,7 +35,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           set_check_status_from_test_outcome: true    
 
-      - name: Test Outcome
+      - name: Fail job on failed tests
         run: exit 1 
         if: ${{ steps.run_tests.outputs.result_value == 'Failed' }}           
 
@@ -46,3 +46,14 @@ jobs:
           VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
           TAG_FORMAT: '*'
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "RacoonSecure"
+          files: |
+            ${{ steps.run_tests.outputs.PACKAGE_PATH }}
+            *.zip
+      
