@@ -68,5 +68,8 @@ public class CustomRegexRule : IPasswordValidationRule
 ```
 ```csharp
 var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).Build();
-```
+```  
 
+# Comming soon
+- Bloom or xor filter rule, to check amongst vast amounts of leaked passwords 
+- RacoonSecure.Identity - ASP.NET Core Identity integration.
