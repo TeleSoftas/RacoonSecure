@@ -21,4 +21,8 @@
       <EmbeddedResource Include="ValidationRules\CommonPasswords\Common.txt" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="murmurhash" Version="1.0.3" />
+    </ItemGroup>
+
 </Project>

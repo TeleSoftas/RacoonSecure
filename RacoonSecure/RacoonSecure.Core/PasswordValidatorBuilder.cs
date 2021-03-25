@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RacoonSecure.Core.ValidationRules;
+using RacoonSecure.Core.ValidationRules.BloomFilter;
 using RacoonSecure.Core.ValidationRules.CommonPasswords;
 using RacoonSecure.Core.ValidationRules.Hibp;
 using RacoonSecure.Core.ValidationRules.Nist;
@@ -45,7 +46,7 @@ namespace RacoonSecure.Core
         /// https://haveibeenpwned.com/
         /// </summary>
         /// <returns></returns>
-        public PasswordValidatorBuilder UseHIBPApi()
+        public PasswordValidatorBuilder UseHibpApi()
         {
             _validationRules.Add(new PasswordNotPwnedRule());
             return this;
@@ -63,13 +64,16 @@ namespace RacoonSecure.Core
             _validationRules.Add(passwordValidationRule);
             return this;
         }
-
-        //TODO: Needs work, comparison with XOR filter must be done.
-        // public PasswordValidatorBuilder UseBloomFilter()
-        // {
-        //     _validationRules.Add(new BloomFilterRule());            
-        //     return this;
-        // }
+        
+        /// <summary>
+        /// Validator performs leaked password check using in-build leaked password database, utilising bloom filter.
+        /// </summary>
+        /// <returns></returns>
+        public PasswordValidatorBuilder UseBloomFilter()
+        {
+            _validationRules.Add(new BloomFilterRule());
+            return this;
+        }
 
         /// <summary>
         /// Build configured PasswordValidator
@@ -79,7 +83,7 @@ namespace RacoonSecure.Core
         {
             if (!_validationRules.Any())
                 throw new InitializationException("No rules have been configured");
-                
+
             return new PasswordValidator(_validationRules);
         }
     }
