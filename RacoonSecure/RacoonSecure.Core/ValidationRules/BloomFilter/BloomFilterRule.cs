@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-
 namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
     internal class BloomFilterRule : IPasswordValidationRule

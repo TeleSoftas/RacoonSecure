@@ -13,6 +13,7 @@ namespace RacoonSecure.Core.ValidationRules.Hibp
             var prefix = hash.Substring(0, 5);
             var suffix = hash.Substring(5, hash.Length - 5);
             
+            //TODO: Investigate alternative ways to complete HTTP request.
             var request = WebRequest.Create($"https://api.pwnedpasswords.com/range/{prefix}");
             var response = request.GetResponse();
 

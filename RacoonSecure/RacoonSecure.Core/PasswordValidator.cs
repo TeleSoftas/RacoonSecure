@@ -18,6 +18,7 @@ namespace RacoonSecure.Core
             
             foreach (var validationRule in _validationRules)
             {
+                //TODO: consider early validation break;
                 result.AddError(validationRule.Validate(password));
             }
             

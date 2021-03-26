@@ -48,6 +48,7 @@ namespace RacoonSecure.Core
         /// <returns></returns>
         public PasswordValidatorBuilder UseHibpApi()
         {
+            //TODO: Pass HttpClient to allow users to allow customization. 
             _validationRules.Add(new PasswordNotPwnedRule());
             return this;
         }

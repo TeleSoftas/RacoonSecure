@@ -5,6 +5,7 @@ using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Core.ValidationRules.CommonPasswords
 {
+    //TODO: Common.txt should be saved as bytes in file.
     internal class CommonPasswordFilterRule : IPasswordValidationRule
     {
         private readonly List<string> _commonPasswordHashes;

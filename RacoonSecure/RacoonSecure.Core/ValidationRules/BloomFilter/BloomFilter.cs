@@ -27,7 +27,6 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
                 SHA256.Create(), 
             };
             
-            
             Add("password1");
             Add("password2");
             Add("password3");
