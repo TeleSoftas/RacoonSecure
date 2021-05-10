@@ -15,13 +15,17 @@ namespace RacoonSecure.Core
         public PasswordValidationResult Validate(string password)
         {
             var result = new PasswordValidationResult();
-            
+
             foreach (var validationRule in _validationRules)
             {
-                //TODO: consider early validation break;
-                result.AddError(validationRule.Validate(password));
+                var error = validationRule.Validate(password);
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    result.AddError(error);
+                    break;
+                }
             }
-            
+
             return result;
         }
     }

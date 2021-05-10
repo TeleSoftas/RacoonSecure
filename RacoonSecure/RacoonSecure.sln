@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.Core.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.PasswordHasher", "RacoonSecure.PasswordHasher\RacoonSecure.PasswordHasher.csproj", "{30A0CB1A-1734-4C37-9567-929AB4FE95AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.Utilities", "RacoonSecure.Utilities\RacoonSecure.Utilities.csproj", "{596CC009-040D-4EE7-8C25-799B0FCF018F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{30A0CB1A-1734-4C37-9567-929AB4FE95AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30A0CB1A-1734-4C37-9567-929AB4FE95AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30A0CB1A-1734-4C37-9567-929AB4FE95AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{596CC009-040D-4EE7-8C25-799B0FCF018F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{596CC009-040D-4EE7-8C25-799B0FCF018F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{596CC009-040D-4EE7-8C25-799B0FCF018F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{596CC009-040D-4EE7-8C25-799B0FCF018F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

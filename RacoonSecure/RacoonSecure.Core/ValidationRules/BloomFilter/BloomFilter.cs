@@ -15,21 +15,21 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
 
         private readonly HashAlgorithm[] _hashAlgorithms;
 
-        public BloomFilter()
+        /// <summary>
+        /// Initializes bloom filter
+        /// </summary>
+        /// <param name="filterSize">Filter size in bytes</param>
+        public BloomFilter(int filterSize)
         {
-            _filterSize = 2048;
+            _filterSize = filterSize * 8;
             _filterBits = new BitArray(_filterSize);
             
             _hashAlgorithms = new HashAlgorithm[]
             {
                 MurmurHash.Create128(),
-                MD5.Create(),
-                SHA256.Create(), 
+                // MD5.Create(),
+                // SHA256.Create(), 
             };
-            
-            Add("password1");
-            Add("password2");
-            Add("password3");
         }
 
         public bool Contains(string input)
@@ -38,13 +38,18 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
             return indexes.All(index => _filterBits[index]);
         }
         
-        private void Add(string input)
+        public void Add(string input)
         {
             var indexes = ComputeIndexes(input);
             foreach (var index in indexes)
             {
                 _filterBits[index] = true;
             }
+        }
+        
+        public BitArray GetFilterBits()
+        {
+            return _filterBits;
         }
 
         private IEnumerable<int> ComputeIndexes(string input)

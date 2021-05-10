@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace RacoonSecure.PasswordHasher
@@ -9,22 +10,26 @@ namespace RacoonSecure.PasswordHasher
     {
         static void Main(string[] args)
         {
-            var dir = @"";
-            var file = "";
+            var dir = @"D:\Passwords";
+            var file = "CommonMinor.txt";
 
             var filePath = Path.Combine(dir, file);
-            var outputPath = Path.Combine(dir, "output.txt");
+            var outputPath = Path.Combine(dir, "CommonMinor");
+
+            var commonPasswords = ReadCommonPasswords(filePath).ToList();
             
-            using var fs = new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            using var sw = new StreamWriter(fs, Encoding.ASCII);
             
-            var counter = 0;
-            foreach (var hash in ReadFileLines(filePath))
+            
+            var fsCreate = File.Create(outputPath);  
+            fsCreate.Close();
+            
+            using var fs = new FileStream(outputPath, FileMode.Append, FileAccess.Write);
+            // using var sw = new StreamWriter(fs, Encoding.ASCII);
+            var bw = new BinaryWriter(fs);
+            
+            foreach (var hash in commonPasswords)
             {
-                var shortHash = hash.Substring(0, 10);
-                sw.Write(shortHash);
-                counter++;
-                Console.WriteLine($"{counter} passwords processed ({hash} - {shortHash})");
+                bw.Write(hash, 0, hash.Length);
             }
 
             Console.WriteLine("Passwords successfully hashed, exiting.");
@@ -40,6 +45,21 @@ namespace RacoonSecure.PasswordHasher
             {
                 yield return line;
             }
+        }
+        
+        private static IEnumerable<byte[]> ReadCommonPasswords(string filePath)
+        {
+            var commonPasswordsBytes = File.ReadAllBytes(filePath);
+            var ms = new MemoryStream(commonPasswordsBytes);
+            
+            var buffer = new byte[10];
+            var commonPasswords = new List<byte[]>();
+            while (ms.Read(buffer, 0, buffer.Length) != 0)
+            {
+                commonPasswords.Add(buffer);        
+            }
+
+            return commonPasswords;
         }
     }
 }

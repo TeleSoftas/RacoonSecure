@@ -10,7 +10,7 @@ namespace RacoonSecure.Core.Cryptography
 
         public static string ComputeSha1Hash(string input)
         {
-            var hashBytes = Sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+            var hashBytes = ComputeSha1HashBytes(input);
             var sb = new StringBuilder();
 
             for (var i = 0; i < hashBytes.Length; i++)
@@ -23,7 +23,7 @@ namespace RacoonSecure.Core.Cryptography
         
         public static string ComputeSha1Hash(string input, int length)
         {
-            var hashBytes = Sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+            var hashBytes = ComputeSha1HashBytes(input);
             var sb = new StringBuilder(hashBytes.Length * 2);
 
             foreach (var b in hashBytes)
@@ -36,5 +36,9 @@ namespace RacoonSecure.Core.Cryptography
 
             return sb.ToString();
         }
+        
+        private static byte[] ComputeSha1HashBytes(byte[] input) => Sha1.ComputeHash(input);
+        private static byte[] ComputeSha1HashBytes(string input) => Sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+        
     }
 }

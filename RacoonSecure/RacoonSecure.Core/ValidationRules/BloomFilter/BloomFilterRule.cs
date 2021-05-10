@@ -6,7 +6,7 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
 
         public BloomFilterRule()
         {
-            _bloomFilter = new BloomFilter();
+            _bloomFilter = new BloomFilter(4086);
         }
 
         public string Validate(string password)
