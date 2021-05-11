@@ -21,6 +21,12 @@ namespace RacoonSecure.Core.Cryptography
             return sb.ToString();
         }
         
+        public static byte[] ComputeSha1HashBytes(string input, int length)
+        {
+            var hashBytes = ComputeSha1HashBytes(input);
+            return hashBytes[..length];
+        }
+        
         public static string ComputeSha1Hash(string input, int length)
         {
             var hashBytes = ComputeSha1HashBytes(input);
@@ -37,7 +43,6 @@ namespace RacoonSecure.Core.Cryptography
             return sb.ToString();
         }
         
-        private static byte[] ComputeSha1HashBytes(byte[] input) => Sha1.ComputeHash(input);
         private static byte[] ComputeSha1HashBytes(string input) => Sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
         
     }

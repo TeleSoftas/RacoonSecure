@@ -18,7 +18,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="ValidationRules\CommonPasswords\Common.txt" />
+      <None Remove="ValidationRules\CommonPasswords\Common" />
+      <EmbeddedResource Include="ValidationRules\CommonPasswords\Common" />
+      <None Remove="ValidationRules\CommonPasswords\Common2" />
     </ItemGroup>
 
     <ItemGroup>

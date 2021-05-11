@@ -16,7 +16,7 @@ namespace RacoonSecure.Core.Tests
         
         [Theory]
         [InlineData("Lov1e2c5", true)]
-        [InlineData("Password1", false)]
+        [InlineData("password1", false)]
         [InlineData("Welcome", false)]
         [InlineData("smile", false)]
         public void PasswordIsCommon(string password, bool shouldBeValid)
