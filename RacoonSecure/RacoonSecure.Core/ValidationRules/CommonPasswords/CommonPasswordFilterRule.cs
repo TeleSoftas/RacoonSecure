@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Core.ValidationRules.CommonPasswords
 {
-    //TODO: Common.txt should be saved as bytes in file.
     internal class CommonPasswordFilterRule : IPasswordValidationRule
     {
         private readonly List<byte[]> _commonPasswords;
