@@ -3,8 +3,7 @@ using System.Text;
 
 namespace RacoonSecure.Core.Cryptography
 {
-    //TODO: back from public to internal
-    public static class CryptoHelper
+    internal static class CryptoHelper
     {
         private static readonly SHA1Managed Sha1 = new SHA1Managed();
 
@@ -26,23 +25,7 @@ namespace RacoonSecure.Core.Cryptography
             var hashBytes = ComputeSha1HashBytes(input);
             return hashBytes[..length];
         }
-        
-        public static string ComputeSha1Hash(string input, int length)
-        {
-            var hashBytes = ComputeSha1HashBytes(input);
-            var sb = new StringBuilder(hashBytes.Length * 2);
 
-            foreach (var b in hashBytes)
-            {
-                // can be "x2" if you want lowercase
-                sb.Append(b.ToString("X2"));
-
-                if (sb.Length == length) break;
-            }
-
-            return sb.ToString();
-        }
-        
         private static byte[] ComputeSha1HashBytes(string input) => Sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
         
     }

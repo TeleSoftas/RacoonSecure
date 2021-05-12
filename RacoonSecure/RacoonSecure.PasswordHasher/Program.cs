@@ -11,20 +11,32 @@ namespace RacoonSecure.PasswordHasher
         static void Main(string[] args)
         {
             var dir = @"D:\Passwords";
-            var file = "Common2.txt";
+            var file = "pwned100k.txt";
 
             var filePath = Path.Combine(dir, file);
-            var outputPath = Path.Combine(dir, "CommonMinor");
+            var outputPath = Path.Combine(dir, "Common");
 
-            var commonPasswords = ReadCommonPasswords(filePath).ToList();
+            var commonPasswords = ReadCommonPasswordsFromSource(filePath).ToList();
             using var fs = new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write);
             foreach (var hash in commonPasswords)
             {
                 var hashBytes = StringToByteArray(hash);
-                fs.Write(hashBytes, 0, hashBytes.Length);
+                fs.Write(hashBytes, 0, 8);
             }
 
             Console.WriteLine("Passwords successfully hashed, exiting.");
+        }
+        
+        private static IEnumerable<string> ReadCommonPasswordsFromSource(string filePath)
+        {
+            using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            using var sr = new StreamReader(filePath, Encoding.UTF8);
+
+            var pass = string.Empty;
+            while ((pass = sr.ReadLine()) != null)
+            {
+                yield return new string(pass.Split(':').First());
+            }
         }
         
         private static IEnumerable<string> ReadCommonPasswords(string filePath)

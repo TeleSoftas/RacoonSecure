@@ -19,12 +19,15 @@
 
     <ItemGroup>
       <None Remove="ValidationRules\CommonPasswords\Common" />
-      <EmbeddedResource Include="ValidationRules\CommonPasswords\Common" />
       <None Remove="ValidationRules\CommonPasswords\Common2" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="murmurhash" Version="1.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="ValidationRules\CommonPasswords\Common" />
     </ItemGroup>
 
 </Project>

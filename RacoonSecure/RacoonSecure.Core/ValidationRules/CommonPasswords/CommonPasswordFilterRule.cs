@@ -7,6 +7,7 @@ namespace RacoonSecure.Core.ValidationRules.CommonPasswords
 {
     internal class CommonPasswordFilterRule : IPasswordValidationRule
     {
+        private const int StoredPasswordLength = 8;
         private readonly List<byte[]> _commonPasswords;
 
         public CommonPasswordFilterRule()
@@ -19,13 +20,9 @@ namespace RacoonSecure.Core.ValidationRules.CommonPasswords
                 ? ValidationError.CommonPassword 
                 : string.Empty;
         
-
         private bool IsPasswordCommon(string password)
         {
-            var hexHash = CryptoHelper.ComputeSha1Hash(password, 10);
-            var hexHashBytes = StringToByteArray(hexHash);
-            
-            var hashBytes = CryptoHelper.ComputeSha1HashBytes(password, 5);
+            var hashBytes = CryptoHelper.ComputeSha1HashBytes(password, StoredPasswordLength);
             return _commonPasswords.Any(commonPassword => hashBytes.SequenceEqual(commonPassword));
         }
         
@@ -36,7 +33,7 @@ namespace RacoonSecure.Core.ValidationRules.CommonPasswords
                 throw new NullReferenceException("No common password resource located");
 
             var commonPasswords = new List<byte[]>();
-            var buffer = new byte[5];
+            var buffer = new byte[StoredPasswordLength];
             while (stream.Read(buffer, 0, buffer.Length) != 0)
             {
                 commonPasswords.Add(buffer.ToArray());
