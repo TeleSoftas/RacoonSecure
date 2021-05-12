@@ -29,9 +29,12 @@ namespace RacoonSecure.Core.Tests
         
         [Theory]
         [InlineData("password1", false)]
-        [InlineData("1ALLEY", true)]
-        [InlineData("LalaLand", true)]
-        [InlineData("password3", false)]
+        [InlineData("123456", false)]
+        [InlineData("Welcome", false)]
+        [InlineData("smile", false)]
+        [InlineData("x4s512x4a", true)]
+        [InlineData("a2s3z5w895", true)]
+   
         public void PasswordIsNotInBloomFilter(string password, bool shouldBeValid)
         {
             var validator = new PasswordValidatorBuilder().UseBloomFilter().Build();

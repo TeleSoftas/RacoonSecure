@@ -1,9 +1,11 @@
+using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace RacoonSecure.Core.Cryptography
 {
-    internal static class CryptoHelper
+    public static class CryptoHelper
     {
         private static readonly SHA1Managed Sha1 = new SHA1Managed();
 
@@ -25,8 +27,14 @@ namespace RacoonSecure.Core.Cryptography
             var hashBytes = ComputeSha1HashBytes(input);
             return hashBytes[..length];
         }
-
-        private static byte[] ComputeSha1HashBytes(string input) => Sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
         
+        public static byte[] ComputeSha1HashBytes(string input) => Sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+        public static byte[] HexStringToByteArray(string hex) {
+            return Enumerable.Range(0, hex.Length)
+                .Where(x => x % 2 == 0)
+                .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                .ToArray();
+        }
     }
 }

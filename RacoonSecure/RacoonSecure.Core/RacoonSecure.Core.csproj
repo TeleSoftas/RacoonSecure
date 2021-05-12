@@ -28,6 +28,8 @@
 
     <ItemGroup>
       <EmbeddedResource Include="ValidationRules\CommonPasswords\Common" />
+      <None Remove="ValidationRules\BloomFilter\Filter" />
+      <EmbeddedResource Include="ValidationRules\BloomFilter\Filter" />
     </ItemGroup>
 
 </Project>

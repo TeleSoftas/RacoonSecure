@@ -6,47 +6,63 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using RacoonSecure.Core.ValidationRules.BloomFilter;
+using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Utilities
 {
     static class Program
     {
-        private static readonly BloomFilter BloomFilter = new(10485760);
-
-        private const string InputPath = @"D:\Passwords\pwned-passwords-sha1-ordered-by-hash-v7.txt";
+        
+        private const string InputPath = @"D:\Passwords\pwned100k.txt";
         private const string OutputPath = @"D:\Passwords\filter";
         
         static async Task Main(string[] args)
         {
             var sw = new Stopwatch();
             
+            //Generate Bloom filter
             sw.Start();
-            await GenerateBloomFilter(InputPath, OutputPath);
+            var filter = await GenerateBloomFilter(InputPath);
             sw.Stop();
-            
             Console.WriteLine($"Executed in: {sw.ElapsedMilliseconds}ms");
+            
+            //Save bloom filter bits to file
+            Console.WriteLine("Exporting BloomFilter bits...");
+            await SaveBloomFilter(filter, OutputPath);
+            Console.WriteLine("Done.");
         }
 
-        private static async Task GenerateBloomFilter(string inputPath, string outputPath)
+        private static async Task<BloomFilter> GenerateBloomFilter(string inputPath)
         {
-            Console.WriteLine($"Starting GenerateBloomFilter(input: {inputPath}, output: {outputPath})");
+            Console.WriteLine($"Starting GenerateBloomFilter(input: {inputPath}");
+            var bloomFilter = new BloomFilter();
             var passwords = ReadFileLines(inputPath);
 
             var counter = 0;
             await foreach (var password in passwords)
             {
                 var delimiterIndex = password.IndexOf(':');
-                BloomFilter.Add(password[..delimiterIndex]);
+                var hashBytes = CryptoHelper.HexStringToByteArray(password[..delimiterIndex]);
+                
+                bloomFilter.Add(hashBytes);
                 counter++;
                 
                 if(counter % 100 == 0)
                     Console.WriteLine($"Processed: {counter}");
             }
             
-            var filterBytes = BitArrayToByteArray(BloomFilter.GetFilterBits());
+            Console.WriteLine("Finished GenerateBloomFilter");
+            return bloomFilter;
+        }
+        
+        private static async Task SaveBloomFilter(BloomFilter bloomFilter, string outputPath)
+        {
+            Console.WriteLine("Starting SaveBloomFilter");
+            
+            var filterBytes = BitArrayToByteArray(bloomFilter.GetFilterBits());
             SaveFile(outputPath, filterBytes);
             
-            Console.WriteLine("Finished GenerateBloomFilter");
+            Console.WriteLine("Finished SaveBloomFilter");
         }
         
         private static async IAsyncEnumerable<string> ReadFileLines(string filePath)

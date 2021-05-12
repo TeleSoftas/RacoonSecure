@@ -10,8 +10,8 @@ namespace RacoonSecure.Core.ValidationRules.Hibp
         {
             var hash = CryptoHelper.ComputeSha1Hash(password);
 
-            var prefix = hash.Substring(0, 5);
-            var suffix = hash.Substring(5, hash.Length - 5);
+            var prefix = hash[..5];
+            var suffix = hash[5..^5];
             
             //TODO: Investigate alternative ways to complete HTTP request.
             var request = WebRequest.Create($"https://api.pwnedpasswords.com/range/{prefix}");
