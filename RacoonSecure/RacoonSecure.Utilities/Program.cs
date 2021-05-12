@@ -13,8 +13,8 @@ namespace RacoonSecure.Utilities
     static class Program
     {
         
-        private const string InputPath = @"D:\Passwords\pwned100k.txt";
-        private const string OutputPath = @"D:\Passwords\filter";
+        private const string InputPath = "";
+        private const string OutputPath = "";
         
         static async Task Main(string[] args)
         {

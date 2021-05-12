@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-
-using System.Text;
 using Murmur;
 using RacoonSecure.Core.Cryptography;
 
-namespace RacoonSecure.Core.ValidationRules.BloomFilter
+namespace RacoonSecure.Utilities
 {
     public class BloomFilter
     {
@@ -23,7 +21,7 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
         public BloomFilter()
         {
             _filterSize = 47456108 * 8;
-            _filterBits = new BitArray(_filterSize); //TODO: Load filterBits from memory
+            _filterBits = new BitArray(_filterSize);
             _hashAlgorithm = MurmurHash.Create128();
         }
         

@@ -11,11 +11,11 @@ namespace RacoonSecure.PasswordHasher
     {
         static void Main(string[] args)
         {
-            var dir = @"D:\Passwords";
-            var file = "pwned100k.txt";
+            var dir = "";
+            var file = "";
 
             var filePath = Path.Combine(dir, file);
-            var outputPath = Path.Combine(dir, "Common");
+            var outputPath = Path.Combine(dir, "");
 
             var commonPasswords = ReadCommonPasswordsFromSource(filePath).ToList();
             using var fs = new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write);
