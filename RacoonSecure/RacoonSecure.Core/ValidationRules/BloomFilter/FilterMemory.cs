@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BloomFilter
+namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
     /// <summary>
     /// Bloom Filter In Mempory Implement
@@ -40,8 +40,8 @@ namespace BloomFilter
         /// <param name="errorRate">The error rate.</param>
         /// <param name="hashFunction">The hash function.</param>
         /// <param name="filterArray"></param>
-        public FilterMemory(int expectedElements, double errorRate, HashFunction hashFunction, byte[] filterArray)
-            : base(expectedElements, errorRate, hashFunction)
+        public FilterMemory(int expectedElements, double errorRate, byte[] filterArray)
+            : base(expectedElements, errorRate)
         {
             _hashBits = filterArray != null 
                 ? new BitArray(filterArray) 
@@ -54,8 +54,8 @@ namespace BloomFilter
         /// <param name="size">The size.</param>
         /// <param name="hashes">The hashes.</param>
         /// <param name="hashFunction">The hash function.</param>
-        public FilterMemory(int size, int hashes, HashFunction hashFunction)
-            : base(size, hashes, hashFunction)
+        public FilterMemory(int size, int hashes)
+            : base(size, hashes)
         {
             _hashBits = new BitArray(Capacity);
         }

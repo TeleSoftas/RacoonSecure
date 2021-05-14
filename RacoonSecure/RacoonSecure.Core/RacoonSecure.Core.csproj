@@ -33,7 +33,6 @@
 
     <ItemGroup>
       <EmbeddedResource Include="ValidationRules\CommonPasswords\Common" />
-      <EmbeddedResource Include="ValidationRules\BloomFilterOld\Filter" />
       <EmbeddedResource Include="ValidationRules\BloomFilter\FilterData" />
     </ItemGroup>
 

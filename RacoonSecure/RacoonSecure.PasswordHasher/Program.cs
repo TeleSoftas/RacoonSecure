@@ -21,7 +21,7 @@ namespace RacoonSecure.PasswordHasher
             using var fs = new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write);
             foreach (var hash in commonPasswords)
             {
-                var hashBytes = CryptoHelper.HexStringToByteArray(hash);
+                var hashBytes = HexStringToByteArray(hash);
                 fs.Write(hashBytes, 0, 8);
             }
 
@@ -40,5 +40,11 @@ namespace RacoonSecure.PasswordHasher
             }
         }
         
+        public static byte[] HexStringToByteArray(string hex) {
+            return Enumerable.Range(0, hex.Length)
+                .Where(x => x % 2 == 0)
+                .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                .ToArray();
+        }
     }
 }

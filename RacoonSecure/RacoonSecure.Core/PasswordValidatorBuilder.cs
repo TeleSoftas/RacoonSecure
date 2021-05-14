@@ -70,17 +70,6 @@ namespace RacoonSecure.Core
         /// Validator performs leaked password check using in-build leaked password database, utilising bloom filter.
         /// </summary>
         /// <returns></returns>
-        public PasswordValidatorBuilder UseOldBloomFilter()
-        {
-            _validationRules.Add(new BloomFilterOldRule());
-            return this;
-        }
-        
-        
-        /// <summary>
-        /// Validator performs leaked password check using in-build leaked password database, utilising bloom filter.
-        /// </summary>
-        /// <returns></returns>
         public PasswordValidatorBuilder UseNewBloomFilter()
         {
             _validationRules.Add(new BloomFilterRule());

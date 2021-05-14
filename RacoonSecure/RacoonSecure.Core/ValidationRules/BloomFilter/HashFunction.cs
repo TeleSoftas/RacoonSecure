@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
 
-namespace BloomFilter
+namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
     /// <summary>
     /// An implemented to provide custom hash functions.

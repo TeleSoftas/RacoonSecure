@@ -29,12 +29,5 @@ namespace RacoonSecure.Core.Cryptography
         }
         
         public static byte[] ComputeSha1HashBytes(string input) => Sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-        public static byte[] HexStringToByteArray(string hex) {
-            return Enumerable.Range(0, hex.Length)
-                .Where(x => x % 2 == 0)
-                .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                .ToArray();
-        }
     }
 }

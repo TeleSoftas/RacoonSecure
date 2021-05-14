@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using BloomFilter;
 using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Core.ValidationRules.BloomFilter
@@ -12,7 +11,7 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
         public BloomFilterRule()
         {
             var filterBytes = ReadBloomFilterFromResource();
-            _bloomFilter = FilterBuilder.Build<byte[]>(10000000, 0.0001, HashMethod.Murmur3, filterBytes);
+            _bloomFilter = FilterBuilder.Build<byte[]>(10000000, 0.0001, filterBytes);
         }
 
         public string Validate(string password)

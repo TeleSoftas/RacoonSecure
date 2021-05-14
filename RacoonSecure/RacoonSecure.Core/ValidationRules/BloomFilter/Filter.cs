@@ -4,17 +4,15 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BloomFilter.HashAlgorithms;
-using RacoonSecure.Core.ValidationRules.BloomFilter;
 
-namespace BloomFilter
+namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
     /// <summary>
     /// Represents a Bloom filter and provides
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="IBloomFilter" />
-    public abstract class Filter<T> : IBloomFilter, IValidationBloomFilter<T>
+    public abstract class Filter<T> : IValidationBloomFilter<T>
     {
         /// <summary>
         /// <see cref="HashFunction"/>
@@ -56,7 +54,7 @@ namespace BloomFilter
         /// errorRate
         /// </exception>
         /// <exception cref="System.ArgumentNullException">hashFunction</exception>
-        public Filter(int expectedElements, double errorRate, HashFunction hashFunction)
+        public Filter(int expectedElements, double errorRate)
         {
             if (expectedElements < 1)
                 throw new ArgumentOutOfRangeException("expectedElements", expectedElements, "expectedElements must be > 0");
@@ -65,7 +63,7 @@ namespace BloomFilter
 
             ExpectedElements = expectedElements;
             ErrorRate = errorRate;
-            Hash = hashFunction ?? throw new ArgumentNullException(nameof(hashFunction));
+            Hash = new Murmur3();
 
             Capacity = BestM(expectedElements, errorRate);
             Hashes = BestK(expectedElements, Capacity);
