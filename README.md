@@ -7,7 +7,6 @@
 ![GitHub](https://img.shields.io/github/license/TeleSoftas/RacoonSecure)
 
 
-
 [![RacoonSecure Logo](RacoonSecure/RacoonSecure.Core/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.Core)
 
 RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up predifined or custom password validation rules and have client passwords validated in no time.
@@ -46,6 +45,10 @@ Invoking `UseNistGuidelines()` while building `PasswordValidator` will result in
 
 `UseCommonPasswordCheck()` adds check against 100,000 most common passwords, if passed password is found amongst common passwords it is considered not valid.
 
+## Bloom Filter rule
+
+`UseBloomFilter()` adds check against 10,000,000 leaked passwords (with 1 in 10,000 false positive rate), if passed password is found amongst common passwords it is considered not valid.
+
 ## HIBP (Have I Been Pwned) rule
 
 `UseHIBPApi()` adds a rule, that consults with [HIBP API](https://haveibeenpwned.com/) to determine whether password has been leaked in the past. Read more on topic of leaked passwords on this [FAQ](https://haveibeenpwned.com/FAQs)
@@ -71,5 +74,4 @@ var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).
 ```  
 
 # Comming soon
-- Bloom or xor filter rule, to check amongst vast amounts of leaked passwords 
 - RacoonSecure.Identity - ASP.NET Core Identity integration.

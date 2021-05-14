@@ -54,6 +54,16 @@ namespace RacoonSecure.Core
         }
 
         /// <summary>
+        /// Validator performs leaked password check using in-build leaked password database, utilising bloom filter.
+        /// </summary>
+        /// <returns></returns>
+        public PasswordValidatorBuilder UseBloomFilter()
+        {
+            _validationRules.Add(new BloomFilterRule());
+            return this;
+        }
+        
+        /// <summary>
         /// Register custom validation rule.
         /// Inherit IPasswordValidationRule and pass instance of your validator.
         /// Validate() method will be called in validation pipeline
@@ -66,16 +76,6 @@ namespace RacoonSecure.Core
             return this;
         }
         
-        /// <summary>
-        /// Validator performs leaked password check using in-build leaked password database, utilising bloom filter.
-        /// </summary>
-        /// <returns></returns>
-        public PasswordValidatorBuilder UseNewBloomFilter()
-        {
-            _validationRules.Add(new BloomFilterRule());
-            return this;
-        }
-
         /// <summary>
         /// Build configured PasswordValidator
         /// </summary>
