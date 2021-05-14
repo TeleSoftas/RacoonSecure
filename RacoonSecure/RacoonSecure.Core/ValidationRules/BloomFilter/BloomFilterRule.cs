@@ -1,17 +1,35 @@
+using System;
+using System.IO;
+using BloomFilter;
+using RacoonSecure.Core.Cryptography;
+
 namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
     internal class BloomFilterRule : IPasswordValidationRule
     {
-        private readonly BloomFilter _bloomFilter;
+        private readonly IValidationBloomFilter<byte[]> _bloomFilter;
 
         public BloomFilterRule()
         {
-            _bloomFilter = new BloomFilter();
+            var filterBytes = ReadBloomFilterFromResource();
+            _bloomFilter = FilterBuilder.Build<byte[]>(10000000, 0.0001, HashMethod.Murmur3, filterBytes);
         }
 
         public string Validate(string password)
         {
-            return _bloomFilter.Contains(password) ? ValidationError.CommonPassword : string.Empty;
+            var passwordBytes = CryptoHelper.ComputeSha1HashBytes(password);
+            return _bloomFilter.Contains(passwordBytes) ? ValidationError.CommonPassword : string.Empty;
+        }
+        
+        private byte[] ReadBloomFilterFromResource()
+        {
+            using var stream = GetType().Assembly.GetManifestResourceStream("RacoonSecure.Core.ValidationRules.BloomFilter.FilterData");
+            if(stream == null)
+                throw new NullReferenceException("No bloom filter resource located");
+
+            using var ms = new MemoryStream();
+            stream.CopyTo(ms);
+            return ms.ToArray();
         }
     }
 }

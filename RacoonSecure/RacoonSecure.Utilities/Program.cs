@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using RacoonSecure.Core.ValidationRules.BloomFilter;
+using BloomFilter;
 using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Utilities
@@ -13,8 +13,8 @@ namespace RacoonSecure.Utilities
     static class Program
     {
         
-        private const string InputPath = "";
-        private const string OutputPath = "";
+        private const string InputPath = @"D:\Passwords\pwned10M.txt";
+        private const string OutputPath = @"D:\Passwords\Filter";
         
         static async Task Main(string[] args)
         {
@@ -28,16 +28,16 @@ namespace RacoonSecure.Utilities
             
             //Save bloom filter bits to file
             Console.WriteLine("Exporting BloomFilter bits...");
-            await SaveBloomFilter(filter, OutputPath);
+            SaveBloomFilter(filter, OutputPath);
             Console.WriteLine("Done.");
         }
 
-        private static async Task<BloomFilter> GenerateBloomFilter(string inputPath)
+        private static async Task<Filter<byte[]>> GenerateBloomFilter(string inputPath)
         {
             Console.WriteLine($"Starting GenerateBloomFilter(input: {inputPath}");
-            var bloomFilter = new BloomFilter();
+            var bloomFilter = FilterBuilder.Build<byte[]>(10000000, 0.0001, HashMethod.Murmur3);
+            
             var passwords = ReadFileLines(inputPath);
-
             var counter = 0;
             await foreach (var password in passwords)
             {
@@ -55,11 +55,11 @@ namespace RacoonSecure.Utilities
             return bloomFilter;
         }
         
-        private static async Task SaveBloomFilter(BloomFilter bloomFilter, string outputPath)
+        private static void SaveBloomFilter(Filter<byte[]> bloomFilter, string outputPath)
         {
             Console.WriteLine("Starting SaveBloomFilter");
-            
-            var filterBytes = BitArrayToByteArray(bloomFilter.GetFilterBits());
+
+            var filterBytes = bloomFilter.SerializeData();
             SaveFile(outputPath, filterBytes);
             
             Console.WriteLine("Finished SaveBloomFilter");

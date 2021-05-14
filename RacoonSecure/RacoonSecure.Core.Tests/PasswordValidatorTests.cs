@@ -37,7 +37,7 @@ namespace RacoonSecure.Core.Tests
    
         public void PasswordIsNotInBloomFilter(string password, bool shouldBeValid)
         {
-            var validator = new PasswordValidatorBuilder().UseBloomFilter().Build();
+            var validator = new PasswordValidatorBuilder().UseNewBloomFilter().Build();
             var validationResult = validator.Validate(password); 
             Assert.True(validationResult.IsValid() == shouldBeValid);
         }
