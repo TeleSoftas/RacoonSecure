@@ -1,33 +1,41 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
     internal class BloomFilterRule : IPasswordValidationRule
     {
-        private readonly IValidationBloomFilter<byte[]> _bloomFilter;
+        private readonly Lazy<Task<IValidationBloomFilter<byte[]>>> _bloomFilter;
 
         public BloomFilterRule()
         {
-            var filterBytes = ReadBloomFilterFromResource();
-            _bloomFilter = FilterBuilder.Build<byte[]>(10000000, 0.0001, filterBytes);
-        }
-
-        public string Validate(string password)
-        {
-            var passwordBytes = CryptoHelper.ComputeSha1HashBytes(password);
-            return _bloomFilter.Contains(passwordBytes) ? ValidationError.CommonPassword : string.Empty;
+            _bloomFilter = new Lazy<Task<IValidationBloomFilter<byte[]>>>(InitializeBloomFilter);
         }
         
-        private byte[] ReadBloomFilterFromResource()
+        private async Task<IValidationBloomFilter<byte[]>> InitializeBloomFilter()
         {
-            using var stream = GetType().Assembly.GetManifestResourceStream("RacoonSecure.Core.ValidationRules.BloomFilter.FilterData");
+            var filterBytes = await ReadBloomFilterFromResource();
+            return FilterBuilder.Build<byte[]>(10000000, 0.0001, filterBytes);
+        }
+        
+        public async Task<string> ValidateAsync(string password)
+        {
+            var passwordBytes = CryptoHelper.ComputeSha1HashBytes(password);
+            return await (await _bloomFilter.Value).ContainsAsync(passwordBytes) 
+                ? ValidationError.CommonPassword 
+                : string.Empty;
+        }
+        
+        private async Task<byte[]> ReadBloomFilterFromResource()
+        {
+            await using var stream = GetType().Assembly.GetManifestResourceStream("RacoonSecure.Core.ValidationRules.BloomFilter.FilterData");
             if(stream == null)
                 throw new NullReferenceException("No bloom filter resource located");
 
-            using var ms = new MemoryStream();
-            stream.CopyTo(ms);
+            await using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
             return ms.ToArray();
         }
     }

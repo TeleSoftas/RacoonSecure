@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace RacoonSecure.Core.ValidationRules
 {
     /// <summary>
@@ -11,6 +13,6 @@ namespace RacoonSecure.Core.ValidationRules
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        string Validate(string password);
+        Task<string> ValidateAsync(string password);
     }
 }

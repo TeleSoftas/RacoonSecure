@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -47,12 +48,12 @@ namespace RacoonSecure.Core
         /// https://haveibeenpwned.com/
         /// </summary>
         /// <returns></returns>
-        public PasswordValidatorBuilder UseHibpApi(HttpClient httpClient)
-        { 
-            _validationRules.Add(new PasswordNotPwnedRule(httpClient));
+        public PasswordValidatorBuilder UseHibpApi(Action<HttpClient> configureHttpClient = null)
+        {
+            _validationRules.Add(new PasswordNotPwnedRule(configureHttpClient));
             return this;
         }
-
+        
         /// <summary>
         /// Validator performs leaked password check using in-build leaked password database, utilising bloom filter.
         /// </summary>

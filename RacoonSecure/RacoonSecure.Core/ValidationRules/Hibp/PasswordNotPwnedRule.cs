@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
 using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Core.ValidationRules.Hibp
@@ -9,19 +10,22 @@ namespace RacoonSecure.Core.ValidationRules.Hibp
     {
         private readonly HttpClient _httpClient;
         
-        public PasswordNotPwnedRule(HttpClient httpClient)
+        public PasswordNotPwnedRule(Action<HttpClient> httpClientAction = null)
         {
-            _httpClient = httpClient;
+            _httpClient = new HttpClient();
+            httpClientAction?.Invoke(_httpClient);
+            
             _httpClient.BaseAddress = new Uri("https://api.pwnedpasswords.com/");
         }
         
-        public string Validate(string password)
+        public async Task<string> ValidateAsync(string password)
         {
             var hash = CryptoHelper.ComputeSha1Hash(password);
 
             var prefix = hash[..5];
             var suffix = hash[5..^5];
             
+            //TODO: Read on value tasks
             var response = _httpClient.GetAsync($"range/{prefix}").Result;
             using var stream = response.Content.ReadAsStreamAsync().Result;
 

@@ -1,17 +1,18 @@
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RacoonSecure.Core.ValidationRules.Nist
 {
     internal class NistComplianceRule : IPasswordValidationRule
     {
-        public string Validate(string password) => CheckNistCompliance(password);
+        public async Task<string> ValidateAsync(string password) => await CheckNistCompliance(password);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="password"></param>
         /// <returns>Error string if password is not NIST compliant</returns>
-        private static string CheckNistCompliance(string password)
+        private static async Task<string> CheckNistCompliance(string password)
         {
             if (string.IsNullOrWhiteSpace(password)) 
                 return ValidationError.Empty;

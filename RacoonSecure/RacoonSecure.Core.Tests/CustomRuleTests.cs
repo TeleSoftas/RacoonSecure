@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using RacoonSecure.Core.ValidationRules;
 using Xunit;
 
@@ -8,36 +9,36 @@ namespace RacoonSecure.Core.Tests
     {
         private class CustomLengthRule : IPasswordValidationRule
         {
-            public string Validate(string password)
+            public Task<string> ValidateAsync(string password)
             {
-                return password.Length > 10
+                return Task.FromResult(password.Length > 10
                     ? string.Empty
-                    : "Password is too long";
+                    : "Password is too long");
             }
         }
 
         private class CustomRegexRule : IPasswordValidationRule
         {
-            public string Validate(string password)
+            public Task<string> ValidateAsync(string password)
             {
-                return Regex.IsMatch(password, @"^[\!\@\#\$\%\^\&\*\(\)]+$") 
+                return Task.FromResult(Regex.IsMatch(password, @"^[\!\@\#\$\%\^\&\*\(\)]+$")
                     ? string.Empty
-                    : "Password doesn't match custom regex"; 
+                    : "Password doesn't match custom regex"); 
             }
         }
 
         private class OnlyNumberValidationRule : IPasswordValidationRule
         {
-            public string Validate(string password)
+            public Task<string> ValidateAsync(string password)
             {
-                return Regex.IsMatch(password, @"^\d+$") 
+                return Task.FromResult(Regex.IsMatch(password, @"^\d+$") 
                     ? string.Empty 
-                    : "Password must contain only numbers";
+                    : "Password must contain only numbers");
             }
         }
 
         [Fact]
-        public void CustomLengthRuleValidatesCorrectly()
+        public async Task CustomLengthRuleValidatesCorrectly()
         {
             const string flawfulPassword = "Pass";
             const string correctPassword = "Password1234567";
@@ -46,12 +47,12 @@ namespace RacoonSecure.Core.Tests
                 .UseCustom(new CustomLengthRule())
                 .Build();
             
-            Assert.False(validator.Validate(flawfulPassword).IsValid());
-            Assert.True(validator.Validate(correctPassword).IsValid());
+            Assert.False((await validator.ValidateAsync(flawfulPassword)).IsValid());
+            Assert.True((await validator.ValidateAsync(correctPassword)).IsValid());
         }
         
         [Fact]
-        public void CustomEmailRuleValidatesCorrectly()
+        public async Task CustomEmailRuleValidatesCorrectly()
         {
             const string flawfulPassword = "&%*#^@(1!a";
             const string correctPassword = "!@#%$&@^#";
@@ -60,19 +61,19 @@ namespace RacoonSecure.Core.Tests
                 .UseCustom(new CustomRegexRule())
                 .Build();
             
-            Assert.False(validator.Validate(flawfulPassword).IsValid());
-            Assert.True(validator.Validate(correctPassword).IsValid());
+            Assert.False((await validator.ValidateAsync(flawfulPassword)).IsValid());
+            Assert.True((await validator.ValidateAsync(correctPassword)).IsValid());
         }
         
         [Fact]
-        public void CustomOnlyNumbersRuleValidatesCorrectly()
+        public async Task CustomOnlyNumbersRuleValidatesCorrectly()
         {
             var validator = new PasswordValidatorBuilder()
                 .UseCustom(new OnlyNumberValidationRule())
                 .Build();
             
-            Assert.True(validator.Validate("456789542135462").IsValid());
-            Assert.False(validator.Validate("4c678x54213a462").IsValid());
+            Assert.True((await validator.ValidateAsync("456789542135462")).IsValid());
+            Assert.False((await validator.ValidateAsync("4c678x54213a462")).IsValid());
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using RacoonSecure.Core.Cryptography;
 
 namespace RacoonSecure.Core.ValidationRules.CommonPasswords
@@ -15,7 +16,7 @@ namespace RacoonSecure.Core.ValidationRules.CommonPasswords
             _commonPasswords = InitializeCommonPasswordsAsBytes();
         }
         
-        public string Validate(string password)
+        public async Task<string> ValidateAsync(string password)
             => IsPasswordCommon(password) 
                 ? ValidationError.CommonPassword 
                 : string.Empty;

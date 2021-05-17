@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using RacoonSecure.Core.ValidationRules;
 
 namespace RacoonSecure.Core
@@ -12,13 +13,13 @@ namespace RacoonSecure.Core
             _validationRules = validationRules;
         }
         
-        public PasswordValidationResult Validate(string password)
+        public async Task<PasswordValidationResult> ValidateAsync(string password)
         {
             var result = new PasswordValidationResult();
 
             foreach (var validationRule in _validationRules)
             {
-                var error = validationRule.Validate(password);
+                var error = await validationRule.ValidateAsync(password);
                 if (!string.IsNullOrWhiteSpace(error))
                 {
                     result.AddError(error);
