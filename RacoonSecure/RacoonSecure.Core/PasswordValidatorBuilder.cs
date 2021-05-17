@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using RacoonSecure.Core.ValidationRules;
 using RacoonSecure.Core.ValidationRules.BloomFilter;
 using RacoonSecure.Core.ValidationRules.CommonPasswords;
@@ -46,10 +47,9 @@ namespace RacoonSecure.Core
         /// https://haveibeenpwned.com/
         /// </summary>
         /// <returns></returns>
-        public PasswordValidatorBuilder UseHibpApi()
-        {
-            //TODO: Pass HttpClient to allow users to allow customization. 
-            _validationRules.Add(new PasswordNotPwnedRule());
+        public PasswordValidatorBuilder UseHibpApi(HttpClient httpClient)
+        { 
+            _validationRules.Add(new PasswordNotPwnedRule(httpClient));
             return this;
         }
 

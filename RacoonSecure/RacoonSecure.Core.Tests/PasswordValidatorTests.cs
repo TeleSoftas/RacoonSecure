@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Xunit;
 
 namespace RacoonSecure.Core.Tests
@@ -52,7 +53,8 @@ namespace RacoonSecure.Core.Tests
         [InlineData("ld7s889e54s23d@", true)]
         public void PasswordIsNotPwned(string password, bool shouldBeValid)
         {
-            var validator = new PasswordValidatorBuilder().UseHibpApi().Build();
+            var httpClient = new HttpClient();
+            var validator = new PasswordValidatorBuilder().UseHibpApi(httpClient).Build();
             var validationResult = validator.Validate(password);
             Assert.True(validationResult.IsValid() == shouldBeValid);
         }
