@@ -72,6 +72,3 @@ public class CustomRegexRule : IPasswordValidationRule
 ```csharp
 var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).Build();
 ```  
-
-# Comming soon
-- RacoonSecure.Identity - ASP.NET Core Identity integration.
