@@ -9,12 +9,11 @@ namespace RacoonSecure.Core.ValidationRules.Hibp
     public class PasswordNotPwnedRule : IPasswordValidationRule
     {
         private readonly HttpClient _httpClient;
-        
-        public PasswordNotPwnedRule(Action<HttpClient> httpClientAction = null)
+
+        //TODO: Consider passing httpclient through constructor 
+        public PasswordNotPwnedRule(HttpClient httpClient = null)
         {
-            _httpClient = new HttpClient();
-            httpClientAction?.Invoke(_httpClient);
-            
+            _httpClient = httpClient ?? new HttpClient();
             _httpClient.BaseAddress = new Uri("https://api.pwnedpasswords.com/");
         }
         
@@ -26,14 +25,15 @@ namespace RacoonSecure.Core.ValidationRules.Hibp
             var suffix = hash[5..^5];
             
             //TODO: Read on value tasks
-            var response = _httpClient.GetAsync($"range/{prefix}").Result;
-            using var stream = response.Content.ReadAsStreamAsync().Result;
+            var response = await _httpClient.GetAsync($"range/{prefix}");
+            await using var stream = await response.Content.ReadAsStreamAsync();
 
             if (stream is null)
                 return string.Empty;
 
-            var reader = new StreamReader(stream);
-            var isValid = !reader.ReadToEnd().Contains(suffix);
+            //TODO: Optimize stream reader logic. 
+            using var reader = new StreamReader(stream);
+            var isValid = !(await reader.ReadToEndAsync()).Contains(suffix);
             
             return isValid
                 ? string.Empty

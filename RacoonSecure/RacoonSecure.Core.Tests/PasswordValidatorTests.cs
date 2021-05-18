@@ -1,4 +1,4 @@
-using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -55,10 +55,7 @@ namespace RacoonSecure.Core.Tests
         public async Task PasswordIsNotPwned(string password, bool shouldBeValid)
         {
             var validator = new PasswordValidatorBuilder()
-                .UseHibpApi(client =>
-                {
-                    client.Timeout = TimeSpan.FromMinutes(1);
-                })
+                .UseHibpApi(new HttpClient())
                 .Build();
             var validationResult = await validator.ValidateAsync(password);
             Assert.True(validationResult.IsValid() == shouldBeValid);

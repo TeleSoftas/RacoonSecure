@@ -112,6 +112,7 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
             return true;
         }
 
+        //TODO: Get rid of Async in-memory operations, since they provide no benefit.
         public override Task<bool> ContainsAsync(byte[] element)
         {
             return Task.FromResult(Contains(element));

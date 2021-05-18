@@ -16,7 +16,7 @@ namespace RacoonSecure.Core.Identity
         public static void AddRacoonSecurePasswordValidator<TUser>(this IServiceCollection services, PasswordValidator validator)
             where TUser : IdentityUser
         {
-            services.AddSingleton<IPasswordValidator<TUser>, RacoonSecurePasswordValidator<TUser>>(
+            services.AddScoped<IPasswordValidator<TUser>, RacoonSecurePasswordValidator<TUser>>(
                 _ => new RacoonSecurePasswordValidator<TUser>(validator)
             );
         }

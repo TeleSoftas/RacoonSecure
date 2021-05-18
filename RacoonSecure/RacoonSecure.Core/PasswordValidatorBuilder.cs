@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -48,9 +47,9 @@ namespace RacoonSecure.Core
         /// https://haveibeenpwned.com/
         /// </summary>
         /// <returns></returns>
-        public PasswordValidatorBuilder UseHibpApi(Action<HttpClient> configureHttpClient = null)
+        public PasswordValidatorBuilder UseHibpApi(HttpClient httpClient = null)
         {
-            _validationRules.Add(new PasswordNotPwnedRule(configureHttpClient));
+            _validationRules.Add(new PasswordNotPwnedRule(httpClient));
             return this;
         }
         
