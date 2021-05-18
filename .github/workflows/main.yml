@@ -48,7 +48,7 @@ jobs:
           TAG_FORMAT: '*'
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-        - name: Publish RacoonSecure.Identity NuGet
+      - name: Publish RacoonSecure.Identity NuGet
         id: nuget_publish_identity
         uses: brandedoutcast/publish-nuget@v2
         with:
