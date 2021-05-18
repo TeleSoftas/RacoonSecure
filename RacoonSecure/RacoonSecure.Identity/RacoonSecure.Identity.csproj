@@ -11,6 +11,7 @@
         <RepositoryUrl>https://github.com/TeleSoftas/RacoonSecure</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageIcon>icon.jpg</PackageIcon>
+        <RootNamespace>RacoonSecure.Core.Identity</RootNamespace>
     </PropertyGroup>
     
     <ItemGroup>
