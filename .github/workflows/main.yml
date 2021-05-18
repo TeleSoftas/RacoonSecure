@@ -39,11 +39,20 @@ jobs:
         run: exit 1 
         if: steps.run_tests.outputs.result_value == 'Failed'          
 
-      - name: Publish to NuGet
-        id: nuget_publish
+      - name: Publish RacoonSecure.Core NuGet
+        id: nuget_publish_core
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
+          VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
+          TAG_FORMAT: '*'
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
+        - name: Publish RacoonSecure.Identity NuGet
+        id: nuget_publish_identity
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Identity/RacoonSecure.Identity.csproj
           VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
           TAG_FORMAT: '*'
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
@@ -56,6 +65,7 @@ jobs:
           prerelease: false
           title: "RacoonSecure"
           files: |
-            ${{ steps.nuget_publish.outputs.PACKAGE_PATH }}
+            ${{ steps.nuget_publish_core.outputs.PACKAGE_PATH }}
+            ${{ steps.nuget_publish_identity.outputs.PACKAGE_PATH }}
             *.zip
       

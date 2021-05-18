@@ -19,7 +19,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="CommonPasswords\common.txt" />
         <None Include="icon.jpg" Pack="true" PackagePath="\" />
     </ItemGroup>
 
