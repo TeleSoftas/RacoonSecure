@@ -58,14 +58,24 @@ jobs:
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
       - uses: "marvinpinto/action-automatic-releases@latest"
-        if: steps.nuget_publish.outputs.PACKAGE_PATH != ''      
+        if: steps.nuget_publish_core.outputs.PACKAGE_PATH != ''      
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ steps.nuget_publish.outputs.VERSION }}"
+          automatic_release_tag: "${{ steps.nuget_publish_core.outputs.VERSION }}"
           prerelease: false
-          title: "RacoonSecure"
+          title: "RacoonSecure.Core"
           files: |
             ${{ steps.nuget_publish_core.outputs.PACKAGE_PATH }}
+            *.zip
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        if: steps.nuget_publish_identity.outputs.PACKAGE_PATH != ''      
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ steps.nuget_publish_identity.outputs.VERSION }}"
+          prerelease: false
+          title: "RacoonSecure.Identity"
+          files: |
             ${{ steps.nuget_publish_identity.outputs.PACKAGE_PATH }}
             *.zip
       
