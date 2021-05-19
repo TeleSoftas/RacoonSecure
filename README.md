@@ -9,7 +9,7 @@
 
 [![RacoonSecure Logo](RacoonSecure/RacoonSecure.Core/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.Core)
 
-RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up predifined or custom password validation rules and have client passwords validated in no time.
+RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up predefined or custom password validation rules and have client passwords validated in no time.
 
 # Contents
 
@@ -27,7 +27,7 @@ RacoonSecure is a lightweight NuGet package for password validation in .NET. Lib
 To start validating away passwords reference [RacoonSecure.Core](https://www.nuget.org/packages/RacoonSecure.Core) package in your project (or use NuGet package manager). Next, instantiate PasswordValidator, this can be done using PasswordValidatorBuilder.
 
 ```csharp
-//Initialization of PasswordValidator that uses NIST guidelines to validate password
+//Initialization of PasswordValidator that uses NIST guidelines to validate the password
 var validator = new PasswordValidatorBuilder().UseNistGuidelines().Build();
 ```
 
@@ -46,11 +46,11 @@ Error messages can be accessed through `ValidationResult.Errors` property which 
 
 Validation rules are set up before `PasswordValidatorBuilder.Build()` is called. Multiple rules can be set up. Passed password will be tested against rules in same order they were added.
 
-## Nist Guidelines rule
-Invoking `UseNistGuidelines()` while building `PasswordValidator` will result in following password checks:
+## NIST Guidelines rule
+Invoking `UseNistGuidelines()` while building `PasswordValidator` will result in the following password checks:
 
 - Password is not `NULL` or empty `string`
-- Password length is 8 or mor characters
+- Password length is 8 or more characters
 - Password does not consist only of white space characters
 
 ## Common Passwords rule
@@ -68,7 +68,7 @@ Invoking `UseNistGuidelines()` while building `PasswordValidator` will result in
 
 # Custom Validation Rules
 
-To create and use custom validation rule with RacoonSecure you will need to create class that inherits `IValidationRule` and register it using `PasswordValidationBuilder.UseCustom()`. Your class must implement `Validate()` method that returns error message string on failed validation. The Rest is up to you!
+To create and use a custom validation rule with RacoonSecure you will need to create a class that inherits `IValidationRule` and register it using `PasswordValidationBuilder.UseCustom()`. Your class must implement `Validate()` method that returns error message string on failed validation. The Rest is up to you!
 
 ```csharp
 public class CustomRegexRule : IPasswordValidationRule
@@ -101,11 +101,12 @@ var validator = new PasswordValidatorBuilder()
     .Build();
 
 //Call services.AddRacoonSecurePasswordValidator<TUser> and pass your validator as parameter
-//pass false as seccond parameter to persist current validation rules and append RacoonSecure on top of existing ones.
+//pass false as seccond parameter to persist current validation rules and append
+//RacoonSecure rules on top of existing ones.
 services.AddIdentity<IdentityUser, IdentityRole>()
     .AddRacoonSecurePasswordValidator<User>(validator)
     
 ```
 
-After this step is done, registering user via `UserManage` will result in checking password against previously registered `validator` and failing if password is seen as not compliant by validator.
+After this step is done, registering a user via `UserManage` will result in checking password against previously registered `validator` and failing if password is seen as not compliant by validator.
 
