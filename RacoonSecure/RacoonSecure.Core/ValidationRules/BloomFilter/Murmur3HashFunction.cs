@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
@@ -6,9 +7,41 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
     /// Building a Better Bloom Filter" by Adam Kirsch and Michael Mitzenmacher,
     /// https://www.eecs.harvard.edu/~michaelm/postscripts/tr-02-05.pdf
     /// </summary>
-    public class Murmur3 : HashFunction
+    public class Murmur3HashFunction
     {
-        public override int[] ComputeHash(byte[] data, int m, int k)
+        private const int IntMax = 2147483647;
+        
+        /// <summary>
+        /// Perform rejection sampling on a 32-bit,
+        ///https://en.wikipedia.org/wiki/Rejection_sampling
+        /// </summary>
+        /// <param name="random">The random.</param>
+        /// <param name="m">integer output range.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int Rejection(int random, int m)
+        {
+            random = Math.Abs(random);
+            if (random > (IntMax - IntMax % m) || random == IntMax)
+                return -1;
+            return random % m;
+        }
+
+        private static uint RotateLeft(uint original, int bits)
+        {
+            return (original << bits) | (original >> (32 - bits));
+        }
+        
+        /// <summary>
+        /// Hashes the specified value.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="m">integer output range.</param>
+        /// <param name="k">number of hashes to be computed.</param>
+        /// <returns>
+        /// int array of hashes hash values
+        /// </returns>
+        public int[] ComputeHash(byte[] data, int m, int k)
         {
             var positions = new int[k];
             uint seed = 0;
@@ -16,7 +49,7 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
             while (hashes < k)
             {
                 seed = MurmurHash3_32(seed, data, 0, data.Length);
-                var hash = Rejection(seed, m);
+                var hash = Rejection((int)seed, m);
                 if (hash != -1)
                 {
                     positions[hashes++] = hash;
@@ -54,10 +87,10 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
             switch (count & 3)
             {
                 case 3:
-                    k1 ^= (uint)(data[tailIdx + 2]) << 16;
+                    k1 ^= (uint)data[tailIdx + 2] << 16;
                     goto case 2;
                 case 2:
-                    k1 ^= (uint)(data[tailIdx + 1]) << 8;
+                    k1 ^= (uint)data[tailIdx + 1] << 8;
                     goto case 1;
                 case 1:
                     k1 ^= data[tailIdx + 0];

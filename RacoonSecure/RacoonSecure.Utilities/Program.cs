@@ -32,10 +32,10 @@ namespace RacoonSecure.Utilities
             Console.WriteLine("Done.");
         }
 
-        private static async Task<Filter<byte[]>> GenerateBloomFilter(string inputPath)
+        private static async Task<BloomFilter> GenerateBloomFilter(string inputPath)
         {
             Console.WriteLine($"Starting GenerateBloomFilter(input: {inputPath}");
-            var bloomFilter = FilterBuilder.Build<byte[]>(10000000, 0.0001);
+            var bloomFilter = FilterBuilder.Build(10000000, 0.0001);
             
             var passwords = ReadFileLines(inputPath);
             var counter = 0;
@@ -55,11 +55,11 @@ namespace RacoonSecure.Utilities
             return bloomFilter;
         }
         
-        private static void SaveBloomFilter(Filter<byte[]> bloomFilter, string outputPath)
+        private static void SaveBloomFilter(BloomFilter filter, string outputPath)
         {
             Console.WriteLine("Starting SaveBloomFilter");
 
-            var filterBytes = bloomFilter.SerializeData();
+            var filterBytes = filter.SerializeData();
             SaveFile(outputPath, filterBytes);
             
             Console.WriteLine("Finished SaveBloomFilter");

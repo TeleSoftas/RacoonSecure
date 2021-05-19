@@ -7,23 +7,23 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
 {
     internal class BloomFilterRule : IPasswordValidationRule
     {
-        private readonly Lazy<Task<IValidationBloomFilter<byte[]>>> _bloomFilter;
+        private readonly Lazy<Task<IValidationBloomFilter>> _bloomFilter;
 
         public BloomFilterRule()
         {
-            _bloomFilter = new Lazy<Task<IValidationBloomFilter<byte[]>>>(InitializeBloomFilter);
+            _bloomFilter = new Lazy<Task<IValidationBloomFilter>>(InitializeBloomFilter);
         }
         
-        private async Task<IValidationBloomFilter<byte[]>> InitializeBloomFilter()
+        private async Task<IValidationBloomFilter> InitializeBloomFilter()
         {
             var filterBytes = await ReadBloomFilterFromResource();
-            return FilterBuilder.Build<byte[]>(10000000, 0.0001, filterBytes);
+            return FilterBuilder.Build(10000000, 0.0001, filterBytes);
         }
         
         public async Task<string> ValidateAsync(string password)
         {
             var passwordBytes = CryptoHelper.ComputeSha1HashBytes(password);
-            return await (await _bloomFilter.Value).ContainsAsync(passwordBytes) 
+            return (await _bloomFilter.Value).Contains(passwordBytes) 
                 ? ValidationError.CommonPassword 
                 : string.Empty;
         }
