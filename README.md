@@ -109,3 +109,5 @@ services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultTokenProviders();
 ```
 
+After this step is done, registering user via `UserManage` will result in checking password against previously registered `validator` and failing if password is seen as not compliant by validator.
+
