@@ -23,7 +23,6 @@ namespace RacoonSecure.Core
                 if (!string.IsNullOrWhiteSpace(error))
                 {
                     result.AddError(error);
-                    break;
                 }
             }
 

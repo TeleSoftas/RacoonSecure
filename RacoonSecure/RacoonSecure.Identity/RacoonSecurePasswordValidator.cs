@@ -27,7 +27,7 @@ namespace RacoonSecure.Core.Identity
                 .Select(error => new IdentityError
                 {
                     Code = error,
-                    Description = "RacoonSecure password validator considered password as not valid."
+                    Description = "RacoonSecure considered password as not valid."
                 }).ToArray();
             
             return IdentityResult.Failed(identityErrors);

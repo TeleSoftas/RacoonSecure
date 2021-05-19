@@ -13,7 +13,7 @@ namespace RacoonSecure.Core.Tests
             {
                 return Task.FromResult(password.Length > 10
                     ? string.Empty
-                    : "Password is too long");
+                    : "TooLong");
             }
         }
 
@@ -23,7 +23,7 @@ namespace RacoonSecure.Core.Tests
             {
                 return Task.FromResult(Regex.IsMatch(password, @"^[\!\@\#\$\%\^\&\*\(\)]+$")
                     ? string.Empty
-                    : "Password doesn't match custom regex"); 
+                    : "RegexMismatch"); 
             }
         }
 
@@ -33,7 +33,7 @@ namespace RacoonSecure.Core.Tests
             {
                 return Task.FromResult(Regex.IsMatch(password, @"^\d+$") 
                     ? string.Empty 
-                    : "Password must contain only numbers");
+                    : "OnlyNumerics");
             }
         }
 

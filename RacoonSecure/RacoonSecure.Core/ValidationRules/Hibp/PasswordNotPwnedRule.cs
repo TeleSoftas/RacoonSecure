@@ -18,6 +18,9 @@ namespace RacoonSecure.Core.ValidationRules.Hibp
         
         public async Task<string> ValidateAsync(string password)
         {
+            if (string.IsNullOrWhiteSpace(password))
+                return ValidationError.PwnedPassword;
+            
             var hash = CryptoHelper.ComputeSha1Hash(password);
 
             var prefix = hash[..5];

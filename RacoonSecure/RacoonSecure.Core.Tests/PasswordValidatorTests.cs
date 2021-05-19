@@ -7,16 +7,6 @@ namespace RacoonSecure.Core.Tests
     public class PasswordValidatorTests
     {
         [Theory]
-        [InlineData("1ALLEY", false)]
-        [InlineData("LalaLand", true)]
-        public async Task PasswordIsNistCompliant(string password, bool shouldBeValid)
-        {
-            var validator = new PasswordValidatorBuilder().UseNistGuidelines().Build();
-            var validationResult = await validator.ValidateAsync(password);
-            Assert.True(validationResult.IsValid() == shouldBeValid);
-        }
-        
-        [Theory]
         [InlineData("Lov1e2c5", true)]
         [InlineData("password1", false)]
         [InlineData("Welcome", false)]
@@ -59,6 +49,23 @@ namespace RacoonSecure.Core.Tests
                 .Build();
             var validationResult = await validator.ValidateAsync(password);
             Assert.True(validationResult.IsValid() == shouldBeValid);
+        }
+
+        [Fact]
+        public async Task CombinedErrorsReturnedWhenPasswordViolatesMoreThanOneRule()
+        {
+            var password = "asd123";
+            var validator = new PasswordValidatorBuilder()
+                .UseNistGuidelines()
+                .UseBloomFilter()
+                .Build();
+            
+            var validationResult = await validator.ValidateAsync(password);
+            Assert.False(validationResult.IsValid());
+            Assert.Collection(validationResult.Errors, 
+                s => s.Equals(ValidationError.TooShort),
+                s => s.Equals(ValidationError.PossiblyLeakedPassword)
+            );
         }
     }
 }

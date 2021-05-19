@@ -14,7 +14,7 @@ namespace RacoonSecure.Core.ValidationRules.Nist
         /// <returns>Error string if password is not NIST compliant</returns>
         private static async Task<string> CheckNistCompliance(string password)
         {
-            if (string.IsNullOrWhiteSpace(password)) 
+            if (string.IsNullOrEmpty(password)) 
                 return ValidationError.Empty;
             if (password.Length < 8)
                 return ValidationError.TooShort;

@@ -25,7 +25,7 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
             var passwordBytes = CryptoHelper.ComputeSha1HashBytes(password);
             var filter = await _bloomFilter.Value; 
             return filter.Contains(passwordBytes) 
-                ? ValidationError.CommonPassword 
+                ? ValidationError.PossiblyLeakedPassword 
                 : string.Empty;
         }
         
