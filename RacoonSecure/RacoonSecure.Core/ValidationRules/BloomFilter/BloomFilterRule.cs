@@ -23,7 +23,8 @@ namespace RacoonSecure.Core.ValidationRules.BloomFilter
         public async Task<string> ValidateAsync(string password)
         {
             var passwordBytes = CryptoHelper.ComputeSha1HashBytes(password);
-            return (await _bloomFilter.Value).Contains(passwordBytes) 
+            var filter = await _bloomFilter.Value; 
+            return filter.Contains(passwordBytes) 
                 ? ValidationError.CommonPassword 
                 : string.Empty;
         }
