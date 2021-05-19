@@ -11,8 +11,20 @@
 
 RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up predifined or custom password validation rules and have client passwords validated in no time.
 
+# Contents
+
+1. [Quick Start](#quick-start)
+2. [Validation Rules](#validation-rules)
+    1. [NIST](#nist-guidelines-rule)
+    2. [Common Passwords](#common-passwords-rule)
+    3. [Bloom Filter](#common-passwords-rule)
+    4. [HIBP](#HIBP-Have-I-Been-Pwned-rule)
+3. [Custom Validation Rules](#custom-validation-rules)
+4. [Identity Framework Integration](#identity-framework-integration)
+ 
+
 # Quick Start
-To get started using library, you should instantiate PasswordValidator, this can be done using PasswordValidatorBuilder.
+To start validating away passwords reference [RacoonSecure.Core](https://www.nuget.org/packages/RacoonSecure.Core) package in your project (or use NuGet package manager). Next, instantiate PasswordValidator, this can be done using PasswordValidatorBuilder.
 
 ```csharp
 //Initialization of PasswordValidator that uses NIST guidelines to validate password
@@ -72,3 +84,28 @@ public class CustomRegexRule : IPasswordValidationRule
 ```csharp
 var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).Build();
 ```  
+
+# Identity Framework Integration
+[![RacoonSecure Logo](RacoonSecure/RacoonSecure.Identity/icon.png)](https://www.nuget.org/packages/RacoonSecure.Identity)
+
+IdentityFramework users should make use [RacoonSecure.Identity](https://www.nuget.org/packages/RacoonSecure.Identity) package for effortless integration with framework's password validation pipeline.
+
+Please note that `.AddRacoonSecurePasswordValidator<TUser>()` placement has a meaning:
+* if called **BEFORE** .`AddIdentity<Tuser, TRole>()` it will **OVERRIDE** default password validation rules of IdentityFramework. 
+* If called **AFTER** .`AddIdentity<Tuser, TRole>()` **APPEND** new validation rules to existing ones.
+
+Example below shows how to register RacoonSecure password validator in IdentityFramework (Overriding default validations and leaving everything to `RacoonSecurePasswordValidator`):
+```csharp
+//Build desired validator
+var validator = new PasswordValidatorBuilder()
+    .UseNistGuidelines()
+    .UseBloomFilter()
+    .Build();
+
+//Call services.AddRacoonSecurePasswordValidator<TUser> and pass your validator as parameter
+services.AddRacoonSecurePasswordValidator<IdentityUser>(validator);
+services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+```
+
