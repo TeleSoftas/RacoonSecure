@@ -1,25 +1,32 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace RacoonSecure.Core.Identity
 {
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Register RacoonSecurePasswordValidator as Identity IPasswordValidator.
-        /// Warning! Call this method before calling services.AddIdentity $lt;TUser, TRole&gt;() if you want
-        /// to override default password validation.
+        /// Register RacoonSecurePasswordValidator as IdentityFramework password validator.
         /// </summary>
-        /// <param name="services"></param>
+        /// <param name="builder">This</param>
         /// <param name="validator">RacoonSecure password validator</param>
+        /// <param name="overrideValidationRules">If set to TRUE, default IdentityFramework password validations will be overwritten</param>
         /// <typeparam name="TUser">Type of IdentityUser used in IdentityContext</typeparam>
-        public static void AddRacoonSecurePasswordValidator<TUser>(this IServiceCollection services, PasswordValidator validator)
+        public static IdentityBuilder AddRacoonSecurePasswordValidator<TUser>(this IdentityBuilder builder, PasswordValidator validator, bool overrideValidationRules = true)
             where TUser : IdentityUser
         {
-            services.AddScoped<IPasswordValidator<TUser>, RacoonSecurePasswordValidator<TUser>>(
+            if (overrideValidationRules)
+            {
+                var currentValidator = builder.Services.FirstOrDefault(x => x.ServiceType == typeof(IPasswordValidator<TUser>));
+                builder.Services.Remove(currentValidator);
+            }
+            
+            builder.Services.AddScoped<IPasswordValidator<TUser>, RacoonSecurePasswordValidator<TUser>>(
                 _ => new RacoonSecurePasswordValidator<TUser>(validator)
             );
+            
+            return builder;
         }
     }
 }

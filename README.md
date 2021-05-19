@@ -90,9 +90,7 @@ var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).
 
 IdentityFramework users should make use [RacoonSecure.Identity](https://www.nuget.org/packages/RacoonSecure.Identity) package for effortless integration with framework's password validation pipeline.
 
-Please note that `.AddRacoonSecurePasswordValidator<TUser>()` placement has a meaning:
-* if called **BEFORE** .`AddIdentity<Tuser, TRole>()` it will **OVERRIDE** default password validation rules of IdentityFramework. 
-* If called **AFTER** .`AddIdentity<Tuser, TRole>()` **APPEND** new validation rules to existing ones.
+Please note that `.AddRacoonSecurePasswordValidator<TUser>()` has an optional parameter to decide whether to override default IdentityFramework password validations.
 
 Example below shows how to register RacoonSecure password validator in IdentityFramework (Overriding default validations and leaving everything to `RacoonSecurePasswordValidator`):
 ```csharp
@@ -103,10 +101,10 @@ var validator = new PasswordValidatorBuilder()
     .Build();
 
 //Call services.AddRacoonSecurePasswordValidator<TUser> and pass your validator as parameter
-services.AddRacoonSecurePasswordValidator<IdentityUser>(validator);
+//pass false as seccond parameter to persist current validation rules and append RacoonSecure on top of existing ones.
 services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddRacoonSecurePasswordValidator<User>(validator)
+    
 ```
 
 After this step is done, registering user via `UserManage` will result in checking password against previously registered `validator` and failing if password is seen as not compliant by validator.
