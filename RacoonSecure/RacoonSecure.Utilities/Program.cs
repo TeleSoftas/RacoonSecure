@@ -1,80 +1,43 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using RacoonSecure.Core.ValidationRules.BloomFilter;
 
 namespace RacoonSecure.Utilities
 {
     static class Program
     {
-        
-        private const string InputPath = @"D:\Passwords\pwned10M.txt";
-        private const string OutputPath = @"D:\Passwords\Filter";
+        private const string BloomInputPath = "";
+        private const string CommonInputPath = "";
+        private const string BloomFileOutputPath = "";
+        private const string CommonFileOutputPath = "";
         
         static async Task Main(string[] args)
         {
-            var sw = new Stopwatch();
-            
-            //Generate Bloom filter
-            sw.Start();
-            var filter = await GenerateBloomFilter(InputPath);
-            sw.Stop();
-            Console.WriteLine($"Executed in: {sw.ElapsedMilliseconds}ms");
-            
-            //Save bloom filter bits to file
-            Console.WriteLine("Exporting BloomFilter bits...");
-            SaveBloomFilter(filter, OutputPath);
-            Console.WriteLine("Done.");
-        }
-
-        private static async Task<BloomFilter> GenerateBloomFilter(string inputPath)
-        {
-            Console.WriteLine($"Starting GenerateBloomFilter(input: {inputPath}");
-            var bloomFilter = FilterBuilder.Build(10000000, 0.0001);
-            
-            var passwords = ReadFileLines(inputPath);
-            var counter = 0;
-            await foreach (var password in passwords)
+            var option = Menu();
+            switch (option)
             {
-                var delimiterIndex = password.IndexOf(':');
-                var hashBytes = HexStringToByteArray(password[..delimiterIndex]);
-                
-                bloomFilter.Add(hashBytes);
-                counter++;
-                
-                if(counter % 100 == 0)
-                    Console.WriteLine($"Processed: {counter}");
+                case 1: await GenerateBloomFilter(BloomInputPath, BloomFileOutputPath); break;
+                case 2: await GenerateCommonPasswordsFile(CommonInputPath, CommonFileOutputPath); break;
+                case 0: return;
             }
-            
-            Console.WriteLine("Finished GenerateBloomFilter");
-            return bloomFilter;
         }
-        
-        private static void SaveBloomFilter(BloomFilter filter, string outputPath)
-        {
-            Console.WriteLine("Starting SaveBloomFilter");
 
+        private static async Task GenerateBloomFilter(string inputFilePath, string outputFilePath)
+        {
+            var generator = new BloomFilterFileGenerator();
+            var filter = await generator.Generate(inputFilePath);
+            
             var filterBytes = filter.SerializeData();
-            SaveFile(outputPath, filterBytes);
-            
-            Console.WriteLine("Finished SaveBloomFilter");
+            SaveFile(outputFilePath, filterBytes);
         }
-        
-        private static async IAsyncEnumerable<string> ReadFileLines(string filePath)
-        {
-            await using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            using var sr = new StreamReader(filePath, Encoding.UTF8);
 
-            string line;
-            while ((line = await sr.ReadLineAsync()) != null)
-            {
-                yield return line;
-            }
+        private static async Task GenerateCommonPasswordsFile(string inputFilePath, string outputFilePath)
+        {
+            var generator = new CommonPasswordFileGenerator();
+            var commonPasswords = await generator.Generate(inputFilePath);
+
+            SaveFile(outputFilePath, commonPasswords.SelectMany(x => x).ToArray());
         }
 
         private static void SaveFile(string filePath, byte[] content)
@@ -83,18 +46,22 @@ namespace RacoonSecure.Utilities
             fs.Write(content, 0, content.Length);
         }
 
-        private static byte[] BitArrayToByteArray(BitArray bits)
+        private static int Menu()
         {
-            var ret = new byte[(bits.Length - 1) / 8 + 1];
-            bits.CopyTo(ret, 0);
-            return ret;
-        }
-        
-        public static byte[] HexStringToByteArray(string hex) {
-            return Enumerable.Range(0, hex.Length)
-                .Where(x => x % 2 == 0)
-                .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                .ToArray();
+            int intVal;
+            string option;
+            
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Available actions:");
+                Console.WriteLine("1. Generate bloom filter");
+                Console.WriteLine("2. Generate common passwords file"); 
+                Console.WriteLine("0. Exit"); 
+                option = Console.ReadLine();
+            } while (!int.TryParse(option, out intVal));
+
+            return intVal;
         }
     }
 }

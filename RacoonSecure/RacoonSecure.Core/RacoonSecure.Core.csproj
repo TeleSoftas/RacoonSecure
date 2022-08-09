@@ -23,15 +23,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="ValidationRules\CommonPasswords\Common" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="murmurhash" Version="1.0.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="ValidationRules\CommonPasswords\Common" />
       <EmbeddedResource Include="ValidationRules\CommonPasswords\Common" />
+      <None Remove="ValidationRules\BloomFilter\FilterData" />
       <EmbeddedResource Include="ValidationRules\BloomFilter\FilterData" />
     </ItemGroup>
 

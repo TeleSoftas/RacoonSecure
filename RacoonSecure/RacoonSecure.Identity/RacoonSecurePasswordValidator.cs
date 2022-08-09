@@ -17,12 +17,9 @@ namespace RacoonSecure.Core.Identity
         public async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user, string password)
         {
             var validationResult = await _passwordValidator.ValidateAsync(password);
-            
-            //Password is Valid
             if(validationResult.IsValid())
                 return IdentityResult.Success;
 
-            //Password is not valid
             var identityErrors = validationResult.Errors
                 .Select(error => new IdentityError
                 {
