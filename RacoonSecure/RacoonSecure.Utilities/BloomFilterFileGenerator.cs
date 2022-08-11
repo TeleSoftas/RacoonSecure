@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RacoonSecure.Core.ValidationRules.BloomFilter;
+using RacoonSecure.PasswordValidator.ValidationRules.BloomFilter;
 
 namespace RacoonSecure.Utilities
 {

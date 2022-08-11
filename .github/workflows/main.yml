@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: RacoonSecure/RacoonSecure.Core
+        working-directory: RacoonSecure/RacoonSecure.PasswordValidator
     steps:
       - uses: actions/checkout@v2
 
@@ -29,9 +29,9 @@ jobs:
         id: run_tests
         uses: zyborg/dotnet-tests-report@v1
         with:
-          project_path: RacoonSecure/RacoonSecure.Core.Tests/RacoonSecure.Core.Tests.csproj
-          report_name: RacoonSecure.Core.Tests
-          report_title: RacoonSecure Core Tests
+          project_path: RacoonSecure/RacoonSecure.PasswordValidator.Tests/RacoonSecure.PasswordValidator.Tests.csproj
+          report_name: RacoonSecure.PasswordValidator.Tests
+          report_title: RacoonSecure PasswordValidator Tests
           github_token: ${{ secrets.GITHUB_TOKEN }}
           set_check_status_from_test_outcome: true    
 
@@ -39,33 +39,33 @@ jobs:
         run: exit 1 
         if: steps.run_tests.outputs.result_value == 'Failed'          
 
-      - name: Publish RacoonSecure.Core NuGet
-        id: nuget_publish_core
+      - name: Publish RacoonSecure.PasswordValidator NuGet
+        id: nuget_publish_password_validator
         uses: brandedoutcast/publish-nuget@v2
         with:
-          PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Core/RacoonSecure.Core.csproj
+          PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.PasswordValidator/RacoonSecure.PasswordValidator.csproj
           VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
           TAG_FORMAT: '*'
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: Publish RacoonSecure.Identity NuGet
+      - name: Publish RacoonSecure.PasswordValidator.Identity NuGet
         id: nuget_publish_identity
         uses: brandedoutcast/publish-nuget@v2
         with:
-          PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.Identity/RacoonSecure.Identity.csproj
+          PROJECT_FILE_PATH: RacoonSecure/RacoonSecure.PasswordValidator.Identity/RacoonSecure.PasswordValidator.Identity.csproj
           VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
           TAG_FORMAT: '*'
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
       - uses: "marvinpinto/action-automatic-releases@latest"
-        if: steps.nuget_publish_core.outputs.PACKAGE_PATH != ''      
+        if: steps.nuget_publish_password_validator.outputs.PACKAGE_PATH != ''      
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ steps.nuget_publish_core.outputs.VERSION }}"
+          automatic_release_tag: "${{ steps.nuget_publish_password_validator.outputs.VERSION }}"
           prerelease: false
-          title: "RacoonSecure.Core"
+          title: "RacoonSecure.PasswordValidator"
           files: |
-            ${{ steps.nuget_publish_core.outputs.PACKAGE_PATH }}
+            ${{ steps.nuget_publish_password_validator.outputs.PACKAGE_PATH }}
             *.zip
 
       - uses: "marvinpinto/action-automatic-releases@latest"
@@ -74,7 +74,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ steps.nuget_publish_identity.outputs.VERSION }}"
           prerelease: false
-          title: "RacoonSecure.Identity"
+          title: "RacoonSecure.PasswordValidator.Identity"
           files: |
             ${{ steps.nuget_publish_identity.outputs.PACKAGE_PATH }}
             *.zip

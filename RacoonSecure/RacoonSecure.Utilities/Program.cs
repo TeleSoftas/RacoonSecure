@@ -57,7 +57,7 @@ namespace RacoonSecure.Utilities
                 Console.WriteLine("Available actions:");
                 Console.WriteLine("1. Generate bloom filter");
                 Console.WriteLine("2. Generate common passwords file"); 
-                Console.WriteLine("0. Exit"); 
+                Console.WriteLine("0. Exit");
                 option = Console.ReadLine();
             } while (!int.TryParse(option, out intVal));
 

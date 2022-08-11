@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.Core", "RacoonSecure.Core\RacoonSecure.Core.csproj", "{04999AC6-D17D-4592-A294-3A29E14D605C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.PasswordValidator", "RacoonSecure.PasswordValidator\RacoonSecure.PasswordValidator.csproj", "{04999AC6-D17D-4592-A294-3A29E14D605C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.Core.Tests", "RacoonSecure.Core.Tests\RacoonSecure.Core.Tests.csproj", "{3FD4F1F9-D0B5-452F-8A13-3D1BABE636DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.PasswordValidator.Tests", "RacoonSecure.PasswordValidator.Tests\RacoonSecure.PasswordValidator.Tests.csproj", "{3FD4F1F9-D0B5-452F-8A13-3D1BABE636DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.Utilities", "RacoonSecure.Utilities\RacoonSecure.Utilities.csproj", "{596CC009-040D-4EE7-8C25-799B0FCF018F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.Identity", "RacoonSecure.Identity\RacoonSecure.Identity.csproj", "{C6BA581D-6559-4595-9BC6-4B6E50C7BA12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacoonSecure.PasswordValidator.Identity", "RacoonSecure.PasswordValidator.Identity\RacoonSecure.PasswordValidator.Identity.csproj", "{C6BA581D-6559-4595-9BC6-4B6E50C7BA12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

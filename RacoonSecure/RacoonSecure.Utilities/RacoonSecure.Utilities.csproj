@@ -14,6 +14,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RacoonSecure.Core\RacoonSecure.Core.csproj" />
+      <ProjectReference Include="..\RacoonSecure.PasswordValidator\RacoonSecure.PasswordValidator.csproj" />
     </ItemGroup>
 </Project>
