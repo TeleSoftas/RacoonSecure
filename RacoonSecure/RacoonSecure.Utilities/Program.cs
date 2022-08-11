@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RacoonSecure.Utilities
@@ -8,9 +7,9 @@ namespace RacoonSecure.Utilities
     static class Program
     {
         private const string BloomInputPath = "";
-        private const string CommonInputPath = "";
+        private const string CommonInputPath = @"C:\Passwords\common_input";
         private const string BloomFileOutputPath = "";
-        private const string CommonFileOutputPath = "";
+        private const string CommonFileOutputPath = @"C:\Passwords\common_output";
         
         static async Task Main(string[] args)
         {
@@ -26,24 +25,26 @@ namespace RacoonSecure.Utilities
         private static async Task GenerateBloomFilter(string inputFilePath, string outputFilePath)
         {
             var generator = new BloomFilterFileGenerator();
-            var filter = await generator.Generate(inputFilePath);
-            
-            var filterBytes = filter.SerializeData();
-            SaveFile(outputFilePath, filterBytes);
+            var filterFileBytes = await generator.GenerateFile(inputFilePath);
+            SaveFile(outputFilePath, filterFileBytes);
         }
 
         private static async Task GenerateCommonPasswordsFile(string inputFilePath, string outputFilePath)
         {
             var generator = new CommonPasswordFileGenerator();
-            var commonPasswords = await generator.Generate(inputFilePath);
+            var commonPasswords = await generator.GenerateFileBytes(inputFilePath);
 
-            SaveFile(outputFilePath, commonPasswords.SelectMany(x => x).ToArray());
+            SaveFile(outputFilePath, commonPasswords);
         }
 
         private static void SaveFile(string filePath, byte[] content)
         {
-            using var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
+            // using var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
+            var fileInfo = new FileInfo(filePath);
+            
+            using var fs = fileInfo.OpenWrite();
             fs.Write(content, 0, content.Length);
+            
         }
 
         private static int Menu()

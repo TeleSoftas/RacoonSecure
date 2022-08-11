@@ -10,7 +10,7 @@ namespace RacoonSecure.Utilities
 {
     public class BloomFilterFileGenerator
     {
-        public async Task<BloomFilter> Generate(string inputPath)
+        public async Task<byte[]> GenerateFile(string inputPath)
         {
             var bloomFilter = FilterBuilder.Build(10000000, 0.0001);
             
@@ -28,7 +28,7 @@ namespace RacoonSecure.Utilities
                     Console.WriteLine($"Processed: {counter}");
             }
             
-            return bloomFilter;
+            return bloomFilter.SerializeData();
         }
         
         private static async IAsyncEnumerable<string> ReadFileLines(string filePath)

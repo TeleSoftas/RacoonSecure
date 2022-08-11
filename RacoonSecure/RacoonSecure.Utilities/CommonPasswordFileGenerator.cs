@@ -9,18 +9,20 @@ namespace RacoonSecure.Utilities
 {
     public class CommonPasswordFileGenerator
     {
-        public async Task<List<byte[]>> Generate(string inputFileName)
-        {
-            var result = new List<byte[]>();
-            var commonPasswords = ReadCommonPasswordsFromSource(inputFileName).ToList();
-            foreach (var hashBytes in commonPasswords.Select(HexStringToByteArray))
-            {
-                result.Add(hashBytes);
-            }
+        private const short HashLength = 8;
 
+        public async Task<byte[]> GenerateFileBytes(string inputFileName)
+        {
+            var commonPasswords = ReadCommonPasswordsFromSource(inputFileName).ToList();
+            var passwordBytes = commonPasswords.Select(HexStringToByteArray).ToList();
+
+            var headerBytes = BitConverter.GetBytes(HashLength);
+            var contentBytes = passwordBytes.SelectMany(x => x).ToArray();
+            
+            var result = headerBytes.Concat(contentBytes).ToArray();
             return result;
         }
-        
+
         private static IEnumerable<string> ReadCommonPasswordsFromSource(string filePath)
         {
             using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
@@ -38,7 +40,7 @@ namespace RacoonSecure.Utilities
             return Enumerable.Range(0, hex.Length)
                 .Where(x => x % 2 == 0)
                 .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                .Take(8)
+                .Take(HashLength)
                 .ToArray();
         }
     }

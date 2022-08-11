@@ -1,13 +1,13 @@
-# Racoon Secure
+# Racoon Secure Password Validator
 
 
-[![Version](https://img.shields.io/nuget/v/RacoonSecure.Core)](https://www.nuget.org/packages/RacoonSecure.Core)
-![Downloads](https://img.shields.io/nuget/dt/RacoonSecure.Core)
+[![Version](https://img.shields.io/nuget/v/RacoonSecure.PasswordValidator)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator)
+![Downloads](https://img.shields.io/nuget/dt/RacoonSecure.PasswordValidator)
 ![Build](https://github.com/Telesoftas/RacoonSecure/actions/workflows/main.yml/badge.svg)
 ![GitHub](https://img.shields.io/github/license/TeleSoftas/RacoonSecure)
 
 
-[![RacoonSecure Logo](RacoonSecure/RacoonSecure.Core/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.Core)
+[![RacoonSecure Logo](RacoonSecure/RacoonSecure.PasswordValidator/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator)
 
 RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up predefined or custom password validation rules and have client passwords validated in no time.
 
@@ -24,7 +24,7 @@ RacoonSecure is a lightweight NuGet package for password validation in .NET. Lib
  
 
 # Quick Start
-To start validating away passwords reference [RacoonSecure.Core](https://www.nuget.org/packages/RacoonSecure.Core) package in your project (or use NuGet package manager). Next, instantiate PasswordValidator, this can be done using PasswordValidatorBuilder.
+To start validating away passwords reference [RacoonSecure.PasswordValidator](https://www.nuget.org/packages/RacoonSecure.PasswordValidator) package in your project (or use NuGet package manager). Next, instantiate PasswordValidator, this can be done using PasswordValidatorBuilder.
 
 ```csharp
 //Initialization of PasswordValidator that uses NIST guidelines to validate the password
@@ -88,7 +88,7 @@ var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).
 # Identity Framework Integration
 [![RacoonSecure Logo](RacoonSecure/RacoonSecure.Identity/icon.png)](https://www.nuget.org/packages/RacoonSecure.Identity)
 
-IdentityFramework users should make use [RacoonSecure.Identity](https://www.nuget.org/packages/RacoonSecure.Identity) package for effortless integration with framework's password validation pipeline.
+IdentityFramework users should make use [RacoonSecure.PasswordValidator.Identity](https://www.nuget.org/packages/RacoonSecure.PasswordValidator.Identity) package for effortless integration with framework's password validation pipeline.
 
 Please note that `.AddRacoonSecurePasswordValidator<TUser>()` has an optional parameter to decide whether to override default IdentityFramework password validations.
 
