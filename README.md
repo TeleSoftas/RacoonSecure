@@ -1,18 +1,18 @@
 # Racoon Secure Password Validator
 
 
-[![Version](https://img.shields.io/nuget/v/RacoonSecure.PasswordValidator)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator)
-![Downloads](https://img.shields.io/nuget/dt/RacoonSecure.PasswordValidator)
-![Build](https://github.com/Telesoftas/RacoonSecure/actions/workflows/main.yml/badge.svg)
-![GitHub](https://img.shields.io/github/license/TeleSoftas/RacoonSecure)
+[![Version](https://img.shields.io/nuget/v/RacoonSecure.PasswordValidator?style=for-the-badge)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator/)
+[![Downloads](https://img.shields.io/nuget/dt/RacoonSecure.PasswordValidator?style=for-the-badge)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator/)
+![Build](https://img.shields.io/github/workflow/status/Telesoftas/RacoonSecure/Publish%20NuGet?style=for-the-badge)
+[![License](https://img.shields.io/github/license/Telesoftas/RacoonSecure?style=for-the-badge)](https://github.com/TeleSoftas/RacoonSecure/blob/main/LICENSE)
 
 
 [![RacoonSecure Logo](RacoonSecure/RacoonSecure.PasswordValidator/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator)
 
-RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up predefined or custom password validation rules and have client passwords validated in no time.
+RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up password validation rules pipeline with pre-written checks against 100,000 most common passwords and/or 10MIL leaked passwords (provided by [HIBP](https://haveibeenpwned.com/)).
+You are welcome to define validation rules of your own as well. Information on existing validation rules and creation of custom ones is defined in this document below. 
 
 # Contents
-
 1. [Quick Start](#quick-start)
 2. [Validation Rules](#validation-rules)
     1. [NIST](#nist-guidelines-rule)
@@ -47,6 +47,8 @@ Error messages can be accessed through `ValidationResult.Errors` property which 
 Validation rules are set up before `PasswordValidatorBuilder.Build()` is called. Multiple rules can be set up. Passed password will be tested against rules in same order they were added.
 
 ## NIST Guidelines rule
+
+NIST Guidelines rule was designed in accordance with [NIST Digital Identity Guidelines p5.1.1.2](https://pages.nist.gov/800-63-3/sp800-63b.html#memsecret).
 Invoking `UseNistGuidelines()` while building `PasswordValidator` will result in the following password checks:
 
 - Password is not `NULL` or empty `string`
@@ -56,6 +58,8 @@ Invoking `UseNistGuidelines()` while building `PasswordValidator` will result in
 ## Common Passwords rule
 
 `UseCommonPasswordCheck()` adds check against 100,000 most common passwords, if passed password is found amongst common passwords it is considered not valid.
+
+
 
 ## Bloom Filter rule
 
@@ -86,7 +90,7 @@ var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).
 ```  
 
 # Identity Framework Integration
-[![RacoonSecure Logo](RacoonSecure/RacoonSecure.Identity/icon.png)](https://www.nuget.org/packages/RacoonSecure.Identity)
+[![RacoonSecure Logo](RacoonSecure/RacoonSecure.PasswordValidator.Identity/icon.png)](https://www.nuget.org/packages/RacoonSecure.Identity)
 
 IdentityFramework users should make use [RacoonSecure.PasswordValidator.Identity](https://www.nuget.org/packages/RacoonSecure.PasswordValidator.Identity) package for effortless integration with framework's password validation pipeline.
 
