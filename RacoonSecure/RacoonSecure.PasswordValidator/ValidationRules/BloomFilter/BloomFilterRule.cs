@@ -16,8 +16,8 @@ namespace RacoonSecure.PasswordValidator.ValidationRules.BloomFilter
         
         private async Task<IValidationBloomFilter> InitializeBloomFilter()
         {
-            var filterBytes = await ReadBloomFilterFromResource();
-            return FilterBuilder.Build(10000000, 0.0001, filterBytes);
+            var (elementCount, errorRate, filterBytes) = await ReadBloomFilterFromResourceAsync();
+            return FilterBuilder.Build(elementCount, errorRate, filterBytes);
         }
         
         public async Task<string> ValidateAsync(string password)
@@ -29,15 +29,24 @@ namespace RacoonSecure.PasswordValidator.ValidationRules.BloomFilter
                 : string.Empty;
         }
         
-        private async Task<byte[]> ReadBloomFilterFromResource()
+        private async Task<(int elementCount, float errorRate, byte[] bloomFilterBytes)> ReadBloomFilterFromResourceAsync()
         {
             await using var stream = GetType().Assembly.GetManifestResourceStream("RacoonSecure.PasswordValidator.ValidationRules.BloomFilter.FilterData");
             if(stream == null)
                 throw new NullReferenceException("No bloom filter resource located");
 
             await using var ms = new MemoryStream();
+
+            var elementCountBytes = new byte[sizeof(int)];
+            await stream.ReadAsync(elementCountBytes, 0, elementCountBytes.Length);
+            var elementCount = BitConverter.ToInt32(elementCountBytes);
+
+            var errorRateBytes = new byte[sizeof(float)];
+            await stream.ReadAsync(errorRateBytes, 0, errorRateBytes.Length);
+            var errorRate = BitConverter.ToSingle(errorRateBytes);
+            
             await stream.CopyToAsync(ms);
-            return ms.ToArray();
+            return (elementCount, errorRate, ms.ToArray());
         }
     }
 }

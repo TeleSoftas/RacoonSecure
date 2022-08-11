@@ -10,9 +10,12 @@ namespace RacoonSecure.Utilities
 {
     public class BloomFilterFileGenerator
     {
+        private const int ExpectedElements = 10000000;
+        private const float ErrorRate = 0.0001f;
+        
         public async Task<byte[]> GenerateFile(string inputPath)
         {
-            var bloomFilter = FilterBuilder.Build(10000000, 0.0001);
+            var bloomFilter = FilterBuilder.Build(ExpectedElements, ErrorRate);
             
             var passwords = ReadFileLines(inputPath);
             var counter = 0;
@@ -23,12 +26,19 @@ namespace RacoonSecure.Utilities
                 
                 bloomFilter.Add(hashBytes);
                 counter++;
-                
-                if(counter % 100 == 0)
+
+                if (counter % 1000 == 0)
+                {
                     Console.WriteLine($"Processed: {counter}");
+                    break;
+                }
             }
+
+            var expectedElementsBytes = BitConverter.GetBytes(ExpectedElements);
+            var errorRateBytes = BitConverter.GetBytes(ErrorRate);
+            var contentBytes = bloomFilter.SerializeData();
             
-            return bloomFilter.SerializeData();
+            return expectedElementsBytes.Concat(errorRateBytes).Concat(contentBytes).ToArray();
         }
         
         private static async IAsyncEnumerable<string> ReadFileLines(string filePath)

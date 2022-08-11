@@ -6,9 +6,9 @@ namespace RacoonSecure.Utilities
 {
     static class Program
     {
-        private const string BloomInputPath = "";
+        private const string BloomInputPath = @"C:\Passwords\bloom_input";
         private const string CommonInputPath = @"C:\Passwords\common_input";
-        private const string BloomFileOutputPath = "";
+        private const string BloomFileOutputPath = @"C:\Passwords\bloom_output"; 
         private const string CommonFileOutputPath = @"C:\Passwords\common_output";
         
         static async Task Main(string[] args)
