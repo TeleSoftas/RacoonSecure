@@ -90,7 +90,7 @@ var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).
 ```  
 
 # Identity Framework Integration
-[![RacoonSecure Logo](RacoonSecure/RacoonSecure.PasswordValidator.Identity/icon.png)](https://www.nuget.org/packages/RacoonSecure.Identity)
+[![RacoonSecure Logo](RacoonSecure/RacoonSecure.PasswordValidator.Identity/icon.png)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator.Identity)
 
 IdentityFramework users should make use [RacoonSecure.PasswordValidator.Identity](https://www.nuget.org/packages/RacoonSecure.PasswordValidator.Identity) package for effortless integration with framework's password validation pipeline.
 
