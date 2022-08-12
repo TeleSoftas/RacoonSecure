@@ -1,5 +1,6 @@
 # Racoon Secure Password Validator
 
+[![RacoonSecure Logo](RacoonSecure/RacoonSecure.PasswordValidator/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator)
 
 [![Version](https://img.shields.io/nuget/v/RacoonSecure.PasswordValidator?style=for-the-badge)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator/)
 [![Downloads](https://img.shields.io/nuget/dt/RacoonSecure.PasswordValidator?style=for-the-badge)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator/)
@@ -7,10 +8,11 @@
 [![License](https://img.shields.io/github/license/Telesoftas/RacoonSecure?style=for-the-badge)](https://github.com/TeleSoftas/RacoonSecure/blob/main/LICENSE)
 
 
-[![RacoonSecure Logo](RacoonSecure/RacoonSecure.PasswordValidator/icon.jpg)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator)
 
-RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up password validation rules pipeline with pre-written checks against 100,000 most common passwords and/or 10MIL leaked passwords (provided by [HIBP](https://haveibeenpwned.com/)).
-You are welcome to define validation rules of your own as well. Information on existing validation rules and creation of custom ones is defined in this document below. 
+RacoonSecure is a lightweight NuGet package for password validation in .NET. Library lets you set up password validation rules pipeline with pre-written checks against 100,000 most common passwords, 10MIL leaked passwords (provided by [HIBP](https://haveibeenpwned.com/)) and more.
+This package is compatible with IdentityFramework, read more in [Identity Framework Integration](#identity-framework-integration)
+
+You are welcome to define validation rules of your own as well. For further information on existing validation rules and creation of custom ones continue reading further.
 
 # Contents
 1. [Quick Start](#quick-start)
@@ -59,11 +61,17 @@ Invoking `UseNistGuidelines()` while building `PasswordValidator` will result in
 
 `UseCommonPasswordCheck()` adds check against 100,000 most common passwords, if passed password is found amongst common passwords it is considered not valid.
 
-
+Common passwords are stored as binary information inside of this package. Number of passwords to check against is chosen by considering practical value of the check as well as memory required to store information, so that package would provide maximum value while being as lightweight as possible.
 
 ## Bloom Filter rule
 
-`UseBloomFilter()` adds check against 10,000,000 leaked passwords (with 1 in 10,000 false positive rate), if passed password is found amongst common passwords it is considered not valid.
+`UseBloomFilter()` adds check against 10,000,000 leaked passwords (with 0.0001% or 1 in 10,000 false positive rate), if passed password is found amongst leaked passwords it is considered not valid. Passwords used in BloomFilter rule are a superset of 100,000 most common passwords collection.
+
+Bloom Filter is a probabilistic data structure which means, it is more memory-efficient in regards to standart data structures at cost of possible False positives (not false negatives). [Using some calculations](https://hur.st/bloomfilter/?n=10000000&p=1.0E-4&m=&k=) it's not hard to determine how much elements you can put into said-size bloom filter at pre-determined filter size to come out with desired false-positives rate.
+
+In our case, we want to keep package as lightweight as possible, thus we end up giving ~23MB of memory for bloom filter, which allows us to place 10,000,000 elements inside and have false-positive rate of 0.0001%. 
+
+Bloom Filter is great for our solution since it provides us with two possible outcomes "Password is definitely not in the filter" and "Password might be in the filter" (false positive). In case we encounter first validation outcome, it is safe to say, that password is never seen in list of 10,000,000 leaked passwords, on the other hand, if validation provides latter outcome, it has 0.0001% chance of being false-positive (better safe than sorry).   
 
 ## HIBP (Have I Been Pwned) rule
 
@@ -90,7 +98,14 @@ var validator = new PasswordValidatorBuilder().UseCustom(new CustomRegexRule()).
 ```  
 
 # Identity Framework Integration
+
 [![RacoonSecure Logo](RacoonSecure/RacoonSecure.PasswordValidator.Identity/icon.png)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator.Identity)
+
+[![Version](https://img.shields.io/nuget/v/RacoonSecure.PasswordValidator.Identity?style=for-the-badge)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator.Identity/)
+[![Downloads](https://img.shields.io/nuget/dt/RacoonSecure.PasswordValidator.Identity?style=for-the-badge)](https://www.nuget.org/packages/RacoonSecure.PasswordValidator.Identity/)
+![Build](https://img.shields.io/github/workflow/status/Telesoftas/RacoonSecure/Publish%20NuGet?style=for-the-badge)
+[![License](https://img.shields.io/github/license/Telesoftas/RacoonSecure?style=for-the-badge)](https://github.com/TeleSoftas/RacoonSecure/blob/main/LICENSE)
+
 
 IdentityFramework users should make use [RacoonSecure.PasswordValidator.Identity](https://www.nuget.org/packages/RacoonSecure.PasswordValidator.Identity) package for effortless integration with framework's password validation pipeline.
 
